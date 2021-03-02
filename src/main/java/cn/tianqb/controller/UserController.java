@@ -6,4 +6,5 @@ package cn.tianqb.controller;
  * @date 2021/3/2 20:54
  */
 public class UserController {
+
 }
