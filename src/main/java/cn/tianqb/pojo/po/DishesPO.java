@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/2 23:59  
+ * @date 2021/3/2 23:59
  * @version v1.0
  */
 @Data
@@ -32,6 +32,7 @@ public class DishesPO extends BaseEntity {
 
     /**
      * 味道
+     * 逗号分隔
      */
     private String taste;
 

@@ -26,4 +26,6 @@ public class CategoryPO extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    private Integer level;
 }

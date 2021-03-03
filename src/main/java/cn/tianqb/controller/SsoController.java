@@ -1,6 +1,7 @@
 package cn.tianqb.controller;
 
 import cn.tianqb.common.WebResult;
+import cn.tianqb.pojo.AccessToken;
 import cn.tianqb.pojo.vo.LoginVO;
 import cn.tianqb.service.SsoService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/3 0:20  
+ * @date 2021/3/3 0:20
  * @version v1.0
  */
 @RestController
@@ -23,17 +24,18 @@ public class SsoController {
     private SsoService ssoService;
 
     @PostMapping("/login")
-    public WebResult login(LoginVO loginVO) {
-        return null;
+    public WebResult<AccessToken> login(LoginVO loginVO) {
+        return WebResult.ok(ssoService.login(loginVO));
     }
 
     @PostMapping("/logout")
     public WebResult logout(LoginVO loginVO) {
-        return null;
+        ssoService.logout(loginVO);
+        return WebResult.ok();
     }
 
     @PostMapping("/registry")
-    public WebResult registry(LoginVO loginVO) {
-        return null;
+    public WebResult<Boolean> registry(LoginVO loginVO) {
+        return WebResult.ok(ssoService.registry(loginVO));
     }
 }
