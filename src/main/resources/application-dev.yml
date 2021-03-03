@@ -13,3 +13,7 @@ spring:
     spring.druid.maxWait: 60000
     spring.druid.timeBetweenEvictionRunsMillis: 60000
     spring.druid.minEvictableIdleTimeMillis: 300000
+
+upload:
+  access-url: /static/file/
+  base-path: d:
