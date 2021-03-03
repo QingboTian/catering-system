@@ -3,7 +3,7 @@ package cn.tianqb.controller;
 import cn.tianqb.common.PageBean;
 import cn.tianqb.common.WebResult;
 import cn.tianqb.pojo.po.Administrator;
-import cn.tianqb.service.AdminService;
+import cn.tianqb.service.SsoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,23 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     @Autowired
-    private AdminService adminService;
+    private SsoService ssoService;
 
-    @PostMapping("/login")
-    public WebResult login(Administrator administrator) {
-        return null;
-    }
-
-    @PostMapping("/logout")
-    public WebResult logout(Administrator administrator) {
-        return null;
-    }
-
-    @PostMapping("/registry")
-    public WebResult registry(Administrator administrator) {
-        return null;
-    }
-
+    /**
+     * 拉黑
+     * @param administrator
+     * @return
+     */
     @PostMapping("/delete")
     public WebResult delete(Administrator administrator) {
         return null;
@@ -47,6 +37,11 @@ public class AdminController {
 
     @GetMapping("/list")
     public WebResult<PageBean> findList() {
+        return null;
+    }
+
+    @GetMapping("/create")
+    public WebResult<Boolean> create() {
         return null;
     }
 

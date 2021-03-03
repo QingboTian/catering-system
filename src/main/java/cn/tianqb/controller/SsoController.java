@@ -1,6 +1,7 @@
 package cn.tianqb.controller;
 
 import cn.tianqb.common.WebResult;
+import cn.tianqb.enums.RoleEnum;
 import cn.tianqb.pojo.AccessToken;
 import cn.tianqb.pojo.vo.LoginVO;
 import cn.tianqb.service.SsoService;
@@ -34,8 +35,14 @@ public class SsoController {
         return WebResult.ok();
     }
 
+    /**
+     * 注册功能只针对用户开放
+     * @param loginVO
+     * @return
+     */
     @PostMapping("/registry")
     public WebResult<Boolean> registry(LoginVO loginVO) {
+        loginVO.setRoleId(RoleEnum.USER.getCode());
         return WebResult.ok(ssoService.registry(loginVO));
     }
 }
