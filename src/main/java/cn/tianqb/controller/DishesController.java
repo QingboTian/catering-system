@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@RequestMapping("/dishes")
+@RequestMapping("/api/dishes")
 public class DishesController {
 
     @PostMapping("/create")

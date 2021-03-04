@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@RequestMapping("/sso")
+@RequestMapping("/api/sso")
 public class SsoController {
 
     @Autowired

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @Slf4j
-@RequestMapping("/upload")
+@RequestMapping("/api/upload")
 public class UploadController {
 
     @PostMapping("/img")

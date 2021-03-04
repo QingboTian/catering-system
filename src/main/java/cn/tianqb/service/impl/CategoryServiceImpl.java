@@ -6,6 +6,7 @@ import cn.tianqb.pojo.example.CategoryExample;
 import cn.tianqb.pojo.po.CategoryPO;
 import cn.tianqb.pojo.query.CategoryQuery;
 import cn.tianqb.service.CategoryService;
+import cn.tianqb.utils.WebHelper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean delete(Integer id) {
         CategoryPO category = categoryMapper.selectByPrimaryKey(id);
+        category.setModifier(WebHelper.getUsername());
         category.setStatus(StatusEnum.DELETED.getCode());
         return categoryMapper.updateByPrimaryKey(category) == 1;
     }

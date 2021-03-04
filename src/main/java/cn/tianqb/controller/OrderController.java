@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderController {
 
     @PostMapping("/create")
