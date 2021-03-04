@@ -12,15 +12,15 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/catering?useSSL=false"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/catering?serverTimezone=GMT"
                         userId="root"
-                        password="root@JD">
+                        password="root">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.jd.learning.man.domain" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="cn.tianqb.pojo.example" targetProject="src/main/java">
             <property name="enableSubPackages" value="false" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -30,10 +30,11 @@
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
         <!--ANNOTATEDMAPPER XMLMAPPER-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jd.learning.man.mapper.material" targetProject="src/main/java">
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="cn.tianqb.mapper"
+                             targetProject="src/main/java">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="vender_xue_material" domainObjectName="Material"/>
+        <table tableName="category" domainObjectName="Category"/>
     </context>
 </generatorConfiguration>

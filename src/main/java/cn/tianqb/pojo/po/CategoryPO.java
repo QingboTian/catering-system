@@ -3,6 +3,8 @@ package cn.tianqb.pojo.po;
 import cn.tianqb.pojo.BaseEntity;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author tianqingbo3
  * @version 1.0
@@ -28,4 +30,6 @@ public class CategoryPO extends BaseEntity {
     private String remark;
 
     private Integer level;
+
+    private List<CategoryPO> children;
 }
