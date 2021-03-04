@@ -1,23 +1,25 @@
 package cn.tianqb.service;
 
-import cn.tianqb.common.PageBean;
 import cn.tianqb.pojo.po.CategoryPO;
 import cn.tianqb.pojo.query.CategoryQuery;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/3 21:54  
- * @version v1.0
+ * @version 1.0
+ * @date 2021/3/4 20:18
  */
-interface CategoryService {
-    
+public interface CategoryService {
+
     Boolean create(CategoryPO categoryPO);
 
-    Boolean delete(Integer id);
+    Boolean delete(Integer id) ;
 
-    PageBean<CategoryPO> findList(CategoryQuery query);
+    PageInfo<CategoryPO> findList(CategoryQuery query);
 
-    CategoryPO group(CategoryQuery query);
+    List<CategoryPO> group(CategoryQuery query);
 
     CategoryPO findOne(CategoryQuery query);
 }
