@@ -1,5 +1,8 @@
 package cn.tianqb.exception;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author tianqingbo3
  * @version 1.0
@@ -9,6 +12,8 @@ public class AppException extends RuntimeException {
 
     private String message;
 
+    @Getter
+    @Setter
     private Integer code;
 
 

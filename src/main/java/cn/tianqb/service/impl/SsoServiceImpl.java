@@ -1,16 +1,32 @@
-package cn.tianqb.service.impl;/**
- * @Description:
- * @Author tianqb
- * @Mail tianqingbo@tianqb.cn
- * @Date 2021/3/3 0:25
- * @Version v1.0
- */
+package cn.tianqb.service.impl;
 
+import cn.tianqb.common.Assert;
+import cn.tianqb.enums.RoleEnum;
+import cn.tianqb.enums.StatusEnum;
+import cn.tianqb.exception.AppException;
+import cn.tianqb.mapper.UserInfoMapper;
 import cn.tianqb.pojo.AccessToken;
+import cn.tianqb.pojo.example.UserInfoExample;
+import cn.tianqb.pojo.po.UserInfo;
 import cn.tianqb.pojo.vo.LoginVO;
 import cn.tianqb.service.SsoService;
+import cn.tianqb.utils.MD5Utils;
+import cn.tianqb.utils.UUIDUtils;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author tianqingbo3
@@ -21,18 +37,101 @@ import org.springframework.stereotype.Service;
 @Service
 public class SsoServiceImpl implements SsoService {
 
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+    /**
+     * H
+     */
+    private final Long EXPIRE = 2L;
+
     @Override
-    public AccessToken login(LoginVO loginVO) {
-        return null;
+    public AccessToken login(HttpServletRequest request, LoginVO loginVO) {
+        PageHelper.startPage(1, 1);
+        Assert.isNull(loginVO, HttpStatus.UNAUTHORIZED.value(), "login object is null");
+        Assert.isNull(loginVO.getUsername(), HttpStatus.UNAUTHORIZED.value(), "username is empty");
+        Assert.isNull(loginVO.getPassword(), HttpStatus.UNAUTHORIZED.value(), "password is empty");
+
+        UserInfoExample example = new UserInfoExample();
+        example.createCriteria().andUsernameEqualTo(loginVO.getUsername());
+        List<UserInfo> list = userInfoMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new AppException("not registry", HttpStatus.UNAUTHORIZED.value());
+        }
+        Assert.notTrue(StatusEnum.NORMAL.getCode().equals(list.get(0).getStatus()), HttpStatus.UNAUTHORIZED.value(),
+                "It is currently on the blacklist");
+        String password = MD5Utils.md5(loginVO.getPassword());
+        Assert.notTrue(password.equals(list.get(0).getPasssword()), HttpStatus.UNAUTHORIZED.value(), "Login password error");
+
+        AccessToken accessToken = buildToken();
+        HttpSession session = request.getSession();
+        session.setAttribute(accessToken.getToken(), list.get(0));
+        session.setMaxInactiveInterval(EXPIRE.intValue() * 60 * 60);
+        return accessToken;
     }
 
     @Override
     public void logout(LoginVO loginVO) {
-
+        // empty
     }
 
     @Override
     public Boolean registry(LoginVO loginVO) {
-        return null;
+        checkParamsByRole(loginVO);
+        checkExist(loginVO);
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(loginVO, userInfo);
+        userInfo.setCreated(new Date());
+        userInfo.setModified(new Date());
+        userInfo.setPasssword(MD5Utils.md5(loginVO.getPassword()));
+        userInfo.setStatus(StatusEnum.NORMAL.getCode());
+        return userInfoMapper.insertSelective(userInfo) == 1;
+    }
+
+    /**
+     * 校验账号是否存在
+     * @param loginVO
+     */
+    private void checkExist(LoginVO loginVO) {
+        PageHelper.startPage(1, 1);
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria username = example.createCriteria().andUsernameEqualTo(loginVO.getUsername());
+        if (!ObjectUtils.isEmpty(loginVO.getMail())) {
+            UserInfoExample.Criteria mail = example.createCriteria().andMailEqualTo(loginVO.getMail());
+            example.or(mail);
+        }
+        if (!ObjectUtils.isEmpty(loginVO.getPhone())) {
+            UserInfoExample.Criteria phone = example.createCriteria().andPhoneEqualTo(loginVO.getPhone());
+            example.or(phone);
+        }
+        example.or(username);
+        List<UserInfo> list = userInfoMapper.selectByExample(example);
+        Assert.isTrue(CollectionUtils.isEmpty(list), "The current user already exists");
+    }
+
+    /**
+     * 校验注册参数 by roleId
+     * @param loginVO
+     */
+    private void checkParamsByRole(LoginVO loginVO) {
+        Assert.isNull(loginVO, "login object is null");
+        Integer roleId = loginVO.getRoleId();
+        Assert.isNull(roleId, "roleId is null");
+        Assert.isNull(loginVO.getUsername(), "username is empty");
+        Assert.isNull(loginVO.getPassword(), "password is empty");
+        if (RoleEnum.ADMINISTRATOR.getCode().equals(roleId)) {
+            // empty
+        }
+        if (RoleEnum.USER.getCode().equals(roleId)) {
+            Assert.isNull(loginVO.getPhone(), "phone is empty");
+        }
+    }
+
+    private AccessToken buildToken() {
+        AccessToken accessToken = new AccessToken();
+        accessToken.setToken(UUIDUtils.uuid());
+        LocalDateTime expire = LocalDateTime.now().plusHours(EXPIRE);
+        accessToken.setExpire(expire.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        return accessToken;
     }
 }

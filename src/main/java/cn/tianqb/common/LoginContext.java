@@ -1,14 +1,8 @@
-package cn.tianqb.common;/**
- * @Description:
- * @Author tianqb
- * @Mail tianqingbo@tianqb.cn
- * @Date 2021/3/4 22:05
- * @Version v1.0
- */
+package cn.tianqb.common;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/4 22:05  
+ * @date 2021/3/4 22:05
  * @version v1.0
  */
 public class LoginContext {

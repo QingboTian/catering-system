@@ -1,10 +1,4 @@
-package cn.tianqb.pojo;/**
- * @Description:
- * @Author tianqb
- * @Mail tianqingbo@tianqb.cn
- * @Date 2021/3/2 23:51
- * @Version v1.0
- */
+package cn.tianqb.pojo;
 
 import lombok.Data;
 
@@ -13,7 +7,7 @@ import java.util.Date;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/2 23:51  
+ * @date 2021/3/2 23:51
  * @version v1.0
  */
 @Data

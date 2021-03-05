@@ -3,8 +3,7 @@ package cn.tianqb.common;
 import cn.tianqb.exception.AppException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
-
-import java.util.Objects;
+import org.springframework.util.ObjectUtils;
 
 /**
 * @author tianqingbo3
@@ -14,8 +13,32 @@ import java.util.Objects;
 public class Assert {
 
     public static void isNull(Object obj, String message) throws AppException {
-        if (Objects.isNull(obj)) {
+        if (ObjectUtils.isEmpty(obj)) {
             throw new AppException(message, HttpStatus.FORBIDDEN.value());
+        }
+    }
+
+    public static void isNull(Object obj, Integer code, String message) throws AppException {
+        if (ObjectUtils.isEmpty(obj)) {
+            throw new AppException(message, code);
+        }
+    }
+
+    public static void isTrue(Boolean exp, Integer code, String message) throws AppException {
+        if (exp) {
+            throw new AppException(message, code);
+        }
+    }
+
+    public static void isTrue(Boolean exp, String message) throws AppException {
+        if (exp) {
+            throw new AppException(message, HttpStatus.FORBIDDEN.value());
+        }
+    }
+
+    public static void notTrue(Boolean exp, Integer code, String message) throws AppException {
+        if (!exp) {
+            throw new AppException(message, code);
         }
     }
 
