@@ -1,7 +1,7 @@
 package cn.tianqb.controller;
 
+import cn.tianqb.common.LoginContext;
 import cn.tianqb.common.WebResult;
-import cn.tianqb.pojo.po.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +19,19 @@ public class UserController {
 
     @GetMapping("/getUserInfo")
     public WebResult<User> getUserInfo() {
-        return null;
+        return WebResult.ok(new User());
+    }
+
+    static class User {
+        private String username;
+        private String phone;
+        private String mail;
+
+        User() {
+            LoginContext loginContext = LoginContext.get();
+            this.username = loginContext.getUsername();
+            this.phone = loginContext.getPhone();
+            this.mail = loginContext.getMail();
+        }
     }
 }

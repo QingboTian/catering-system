@@ -4,6 +4,7 @@ import cn.tianqb.pojo.BaseEntity;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author tianqingbo3
@@ -39,5 +40,5 @@ public class Order extends BaseEntity {
      */
     private String remark;
 
-
+    private List<OrderDetailPO> orderDetails;
 }

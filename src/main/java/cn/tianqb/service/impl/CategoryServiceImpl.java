@@ -38,7 +38,6 @@ public class CategoryServiceImpl implements CategoryService {
             CategoryPO category = categoryMapper.selectByPrimaryKey(categoryPO.getParentId());
             categoryPO.setLevel(category.getLevel() + 1);
         }
-        categoryPO.setCreated(new Date());
         return categoryMapper.insertSelective(categoryPO) == 1;
     }
 
