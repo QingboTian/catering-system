@@ -1,11 +1,11 @@
 package cn.tianqb.controller;
 
-import cn.tianqb.common.PageBean;
 import cn.tianqb.common.WebResult;
 import cn.tianqb.pojo.po.DishesPO;
 import cn.tianqb.pojo.query.DishesQuery;
 import cn.tianqb.service.DishesService;
 import cn.tianqb.utils.WebHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,21 +36,21 @@ public class DishesController {
 
     @PostMapping("/delete")
     public WebResult<Boolean> delete(Integer id) {
-        return null;
+        return WebResult.ok(dishesService.delete(id));
     }
 
     @PostMapping("/update")
     public WebResult<Boolean> update(DishesPO dishesPO) {
-        return null;
+        return WebResult.ok(dishesService.update(dishesPO));
     }
 
     @GetMapping("/list")
-    public WebResult<PageBean<DishesPO>> findList(DishesQuery query) {
-        return null;
+    public WebResult<PageInfo<DishesPO>> findList(DishesQuery query) {
+        return WebResult.ok(dishesService.findList(query));
     }
 
     @GetMapping("/get")
     public WebResult<DishesPO> findOne(DishesQuery query) {
-        return null;
+        return WebResult.ok(dishesService.findOne(query));
     }
 }
