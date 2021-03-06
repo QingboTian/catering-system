@@ -245,52 +245,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceEqualTo(Long value) {
+        public Criteria andTotalPriceEqualTo(Double value) {
             addCriterion("total_price =", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotEqualTo(Long value) {
+        public Criteria andTotalPriceNotEqualTo(Double value) {
             addCriterion("total_price <>", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThan(Long value) {
+        public Criteria andTotalPriceGreaterThan(Double value) {
             addCriterion("total_price >", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andTotalPriceGreaterThanOrEqualTo(Double value) {
             addCriterion("total_price >=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThan(Long value) {
+        public Criteria andTotalPriceLessThan(Double value) {
             addCriterion("total_price <", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThanOrEqualTo(Long value) {
+        public Criteria andTotalPriceLessThanOrEqualTo(Double value) {
             addCriterion("total_price <=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceIn(List<Long> values) {
+        public Criteria andTotalPriceIn(List<Double> values) {
             addCriterion("total_price in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotIn(List<Long> values) {
+        public Criteria andTotalPriceNotIn(List<Double> values) {
             addCriterion("total_price not in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceBetween(Long value1, Long value2) {
+        public Criteria andTotalPriceBetween(Double value1, Double value2) {
             addCriterion("total_price between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotBetween(Long value1, Long value2) {
+        public Criteria andTotalPriceNotBetween(Double value1, Double value2) {
             addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }

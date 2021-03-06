@@ -2,7 +2,7 @@ package cn.tianqb.controller;
 
 import cn.tianqb.common.PageBean;
 import cn.tianqb.common.WebResult;
-import cn.tianqb.pojo.po.Order;
+import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.query.OrderQuery;
 import cn.tianqb.pojo.vo.CommentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,12 @@ import java.util.Map;
 public class OrderController {
 
     @PostMapping("/create")
-    public WebResult<Boolean> create(Order order) {
+    public WebResult<Boolean> create(OrderPO orderPO) {
         return null;
     }
 
     @GetMapping("/list")
-    public WebResult<PageBean<Order>> findList(OrderQuery query) {
+    public WebResult<PageBean<OrderPO>> findList(OrderQuery query) {
         return null;
     }
 
@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public WebResult<Order> findOne(OrderQuery query) {
+    public WebResult<OrderPO> findOne(OrderQuery query) {
         return null;
     }
 

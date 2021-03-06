@@ -1,9 +1,9 @@
 package cn.tianqb.mapper;
 
+import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.example.OrderExample;
 import cn.tianqb.pojo.example.OrderExample.Criteria;
 import cn.tianqb.pojo.example.OrderExample.Criterion;
-import cn.tianqb.pojo.po.Order;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class OrderSqlProvider {
         return SQL();
     }
 
-    public String insertSelective(Order record) {
+    public String insertSelective(OrderPO record) {
         BEGIN();
         INSERT_INTO("order_table");
 
@@ -40,7 +40,7 @@ public class OrderSqlProvider {
         }
 
         if (record.getTotalPrice() != null) {
-            VALUES("total_price", "#{totalPrice,jdbcType=DECIMAL}");
+            VALUES("total_price", "#{totalPrice,jdbcType=DOUBLE}");
         }
 
         if (record.getPhone() != null) {
@@ -106,7 +106,7 @@ public class OrderSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Order record = (Order) parameter.get("record");
+        OrderPO record = (OrderPO) parameter.get("record");
         OrderExample example = (OrderExample) parameter.get("example");
 
         BEGIN();
@@ -121,7 +121,7 @@ public class OrderSqlProvider {
         }
 
         if (record.getTotalPrice() != null) {
-            SET("total_price = #{record.totalPrice,jdbcType=DECIMAL}");
+            SET("total_price = #{record.totalPrice,jdbcType=DOUBLE}");
         }
 
         if (record.getPhone() != null) {
@@ -166,7 +166,7 @@ public class OrderSqlProvider {
 
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("order_id = #{record.orderId,jdbcType=VARCHAR}");
-        SET("total_price = #{record.totalPrice,jdbcType=DECIMAL}");
+        SET("total_price = #{record.totalPrice,jdbcType=DOUBLE}");
         SET("phone = #{record.phone,jdbcType=VARCHAR}");
         SET("address = #{record.address,jdbcType=VARCHAR}");
         SET("remark = #{record.remark,jdbcType=VARCHAR}");
@@ -181,7 +181,7 @@ public class OrderSqlProvider {
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(Order record) {
+    public String updateByPrimaryKeySelective(OrderPO record) {
         BEGIN();
         UPDATE("order_table");
 
@@ -190,7 +190,7 @@ public class OrderSqlProvider {
         }
 
         if (record.getTotalPrice() != null) {
-            SET("total_price = #{totalPrice,jdbcType=DECIMAL}");
+            SET("total_price = #{totalPrice,jdbcType=DOUBLE}");
         }
 
         if (record.getPhone() != null) {

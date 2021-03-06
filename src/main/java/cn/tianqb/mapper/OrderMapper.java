@@ -1,6 +1,6 @@
 package cn.tianqb.mapper;
 
-import cn.tianqb.pojo.po.Order ;
+import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.example.OrderExample;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -29,22 +29,22 @@ public interface OrderMapper {
         "creator, modifier, ",
         "status)",
         "values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, ",
-        "#{totalPrice,jdbcType=DECIMAL}, #{phone,jdbcType=VARCHAR}, ",
+        "#{totalPrice,jdbcType=DOUBLE}, #{phone,jdbcType=VARCHAR}, ",
         "#{address,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, ",
         "#{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, ",
         "#{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, ",
         "#{status,jdbcType=INTEGER})"
     })
-    int insert(Order record);
+    int insert(OrderPO record);
 
     @InsertProvider(type=OrderSqlProvider.class, method="insertSelective")
-    int insertSelective(Order record);
+    int insertSelective(OrderPO record);
 
     @SelectProvider(type=OrderSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="order_id", property="orderId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="total_price", property="totalPrice", jdbcType=JdbcType.DECIMAL),
+        @Result(column="total_price", property="totalPrice", jdbcType=JdbcType.DOUBLE),
         @Result(column="phone", property="phone", jdbcType=JdbcType.VARCHAR),
         @Result(column="address", property="address", jdbcType=JdbcType.VARCHAR),
         @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
@@ -54,7 +54,7 @@ public interface OrderMapper {
         @Result(column="modifier", property="modifier", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
     })
-    List<Order> selectByExample(OrderExample example);
+    List<OrderPO> selectByExample(OrderExample example);
 
     @Select({
         "select",
@@ -66,7 +66,7 @@ public interface OrderMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="order_id", property="orderId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="total_price", property="totalPrice", jdbcType=JdbcType.DECIMAL),
+        @Result(column="total_price", property="totalPrice", jdbcType=JdbcType.DOUBLE),
         @Result(column="phone", property="phone", jdbcType=JdbcType.VARCHAR),
         @Result(column="address", property="address", jdbcType=JdbcType.VARCHAR),
         @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
@@ -76,21 +76,21 @@ public interface OrderMapper {
         @Result(column="modifier", property="modifier", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
     })
-    Order selectByPrimaryKey(Integer id);
+    OrderPO selectByPrimaryKey(Integer id);
 
     @UpdateProvider(type=OrderSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") Order record, @Param("example") OrderExample example);
+    int updateByExampleSelective(@Param("record") OrderPO record, @Param("example") OrderExample example);
 
     @UpdateProvider(type=OrderSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") Order record, @Param("example") OrderExample example);
+    int updateByExample(@Param("record") OrderPO record, @Param("example") OrderExample example);
 
     @UpdateProvider(type=OrderSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(Order record);
+    int updateByPrimaryKeySelective(OrderPO record);
 
     @Update({
         "update order_table",
         "set order_id = #{orderId,jdbcType=VARCHAR},",
-          "total_price = #{totalPrice,jdbcType=DECIMAL},",
+          "total_price = #{totalPrice,jdbcType=DOUBLE},",
           "phone = #{phone,jdbcType=VARCHAR},",
           "address = #{address,jdbcType=VARCHAR},",
           "remark = #{remark,jdbcType=VARCHAR},",
@@ -101,5 +101,5 @@ public interface OrderMapper {
           "status = #{status,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(Order record);
+    int updateByPrimaryKey(OrderPO record);
 }

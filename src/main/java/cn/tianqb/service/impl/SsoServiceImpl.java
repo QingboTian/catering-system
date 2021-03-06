@@ -61,7 +61,7 @@ public class SsoServiceImpl implements SsoService {
         Assert.notTrue(StatusEnum.NORMAL.getCode().equals(list.get(0).getStatus()), HttpStatus.UNAUTHORIZED.value(),
                 "It is currently on the blacklist");
         String password = MD5Utils.md5(loginVO.getPassword());
-        Assert.notTrue(password.equals(list.get(0).getPasssword()), HttpStatus.UNAUTHORIZED.value(), "Login password error");
+        Assert.notTrue(password.equals(list.get(0).getPassword()), HttpStatus.UNAUTHORIZED.value(), "Login password error");
 
         AccessToken accessToken = buildToken();
         HttpSession session = request.getSession();
@@ -83,7 +83,7 @@ public class SsoServiceImpl implements SsoService {
         BeanUtils.copyProperties(loginVO, userInfo);
         userInfo.setCreated(new Date());
         userInfo.setModified(new Date());
-        userInfo.setPasssword(MD5Utils.md5(loginVO.getPassword()));
+        userInfo.setPassword(MD5Utils.md5(loginVO.getPassword()));
         userInfo.setStatus(StatusEnum.NORMAL.getCode());
         return userInfoMapper.insertSelective(userInfo) == 1;
     }

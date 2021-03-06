@@ -1,24 +1,14 @@
 package cn.tianqb.mapper;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
-import cn.tianqb.pojo.example.OrderDetail;
+import cn.tianqb.pojo.example.OrderDetailExample;
 import cn.tianqb.pojo.example.OrderDetailExample.Criteria;
 import cn.tianqb.pojo.example.OrderDetailExample.Criterion;
-import cn.tianqb.pojo.example.OrderDetailExample;
+import cn.tianqb.pojo.po.OrderDetailPO;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class OrderDetailSqlProvider {
 
@@ -37,62 +27,62 @@ public class OrderDetailSqlProvider {
         return SQL();
     }
 
-    public String insertSelective(OrderDetail record) {
+    public String insertSelective(OrderDetailPO record) {
         BEGIN();
         INSERT_INTO("order_detail");
-        
+
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getDishesId() != null) {
             VALUES("dishes_id", "#{dishesId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotal() != null) {
             VALUES("total", "#{total,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotalPrice() != null) {
-            VALUES("total_price", "#{totalPrice,jdbcType=DECIMAL}");
+            VALUES("total_price", "#{totalPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getDishesPrice() != null) {
-            VALUES("dishes_price", "#{dishesPrice,jdbcType=DECIMAL}");
+            VALUES("dishes_price", "#{dishesPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getOrderId() != null) {
             VALUES("order_id", "#{orderId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDishesName() != null) {
             VALUES("dishes_name", "#{dishesName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             VALUES("url", "#{url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCreated() != null) {
             VALUES("created", "#{created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             VALUES("modified", "#{modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             VALUES("creator", "#{creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             VALUES("modifier", "#{modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             VALUES("status", "#{status,jdbcType=INTEGER}");
         }
-        
+
         return SQL();
     }
 
@@ -117,73 +107,73 @@ public class OrderDetailSqlProvider {
         SELECT("status");
         FROM("order_detail");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        OrderDetail record = (OrderDetail) parameter.get("record");
+        OrderDetailPO record = (OrderDetailPO) parameter.get("record");
         OrderDetailExample example = (OrderDetailExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("order_detail");
-        
+
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getDishesId() != null) {
             SET("dishes_id = #{record.dishesId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotal() != null) {
             SET("total = #{record.total,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotalPrice() != null) {
-            SET("total_price = #{record.totalPrice,jdbcType=DECIMAL}");
+            SET("total_price = #{record.totalPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getDishesPrice() != null) {
-            SET("dishes_price = #{record.dishesPrice,jdbcType=DECIMAL}");
+            SET("dishes_price = #{record.dishesPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getOrderId() != null) {
             SET("order_id = #{record.orderId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDishesName() != null) {
             SET("dishes_name = #{record.dishesName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             SET("url = #{record.url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCreated() != null) {
             SET("created = #{record.created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             SET("modified = #{record.modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             SET("creator = #{record.creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             SET("modifier = #{record.modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             SET("status = #{record.status,jdbcType=INTEGER}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -191,12 +181,12 @@ public class OrderDetailSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("order_detail");
-        
+
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("dishes_id = #{record.dishesId,jdbcType=INTEGER}");
         SET("total = #{record.total,jdbcType=INTEGER}");
-        SET("total_price = #{record.totalPrice,jdbcType=DECIMAL}");
-        SET("dishes_price = #{record.dishesPrice,jdbcType=DECIMAL}");
+        SET("total_price = #{record.totalPrice,jdbcType=DOUBLE}");
+        SET("dishes_price = #{record.dishesPrice,jdbcType=DOUBLE}");
         SET("order_id = #{record.orderId,jdbcType=VARCHAR}");
         SET("dishes_name = #{record.dishesName,jdbcType=VARCHAR}");
         SET("url = #{record.url,jdbcType=VARCHAR}");
@@ -205,66 +195,66 @@ public class OrderDetailSqlProvider {
         SET("creator = #{record.creator,jdbcType=VARCHAR}");
         SET("modifier = #{record.modifier,jdbcType=VARCHAR}");
         SET("status = #{record.status,jdbcType=INTEGER}");
-        
+
         OrderDetailExample example = (OrderDetailExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(OrderDetail record) {
+    public String updateByPrimaryKeySelective(OrderDetailPO record) {
         BEGIN();
         UPDATE("order_detail");
-        
+
         if (record.getDishesId() != null) {
             SET("dishes_id = #{dishesId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotal() != null) {
             SET("total = #{total,jdbcType=INTEGER}");
         }
-        
+
         if (record.getTotalPrice() != null) {
-            SET("total_price = #{totalPrice,jdbcType=DECIMAL}");
+            SET("total_price = #{totalPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getDishesPrice() != null) {
-            SET("dishes_price = #{dishesPrice,jdbcType=DECIMAL}");
+            SET("dishes_price = #{dishesPrice,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getOrderId() != null) {
             SET("order_id = #{orderId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDishesName() != null) {
             SET("dishes_name = #{dishesName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             SET("url = #{url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCreated() != null) {
             SET("created = #{created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             SET("modified = #{modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             SET("creator = #{creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             SET("modifier = #{modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             SET("status = #{status,jdbcType=INTEGER}");
         }
-        
+
         WHERE("id = #{id,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -272,7 +262,7 @@ public class OrderDetailSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -294,7 +284,7 @@ public class OrderDetailSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -306,7 +296,7 @@ public class OrderDetailSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -317,7 +307,7 @@ public class OrderDetailSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
@@ -355,7 +345,7 @@ public class OrderDetailSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

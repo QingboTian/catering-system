@@ -1,7 +1,6 @@
 package cn.tianqb.service.impl;
 
 import cn.tianqb.common.Assert;
-import cn.tianqb.common.PageBean;
 import cn.tianqb.enums.OrderEvent;
 import cn.tianqb.enums.OrderStatusEnum;
 import cn.tianqb.enums.StatusEnum;
@@ -9,7 +8,7 @@ import cn.tianqb.exception.AppException;
 import cn.tianqb.mapper.OrderDetailMapper;
 import cn.tianqb.mapper.OrderMapper;
 import cn.tianqb.pojo.example.OrderExample;
-import cn.tianqb.pojo.po.Order;
+import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.po.OrderDetailPO;
 import cn.tianqb.pojo.query.OrderQuery;
 import cn.tianqb.pojo.vo.CommentVO;
@@ -44,48 +43,46 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailMapper orderDetailMapper;
 
     @Override
-    public Boolean create(Order order) {
-        orderCheck(order);
-        orderInit(order);
-        orderDetailCalculate(order);
+    public Boolean create(OrderPO orderPO) {
+        orderCheck(orderPO);
+        orderInit(orderPO);
+        orderDetailInit(orderPO);
         return Boolean.TRUE;
     }
 
-    private void orderCheck(Order order) {
-        Assert.isNull(order, "order is null");
-        Assert.isTrue(CollectionUtils.isEmpty(order.getOrderDetails()), "order is empty");
-        Assert.isNull(order.getPhone(), "phone is null");
+    private void orderCheck(OrderPO orderPO) {
+        Assert.isNull(orderPO, "orderPO is null");
+        Assert.isTrue(CollectionUtils.isEmpty(orderPO.getOrderDetails()), "orderPO is empty");
+        Assert.isNull(orderPO.getPhone(), "phone is null");
     }
 
-    private void orderInit(Order order) {
-        order.setCreator(WebHelper.getUsername());
-        order.setModifier(WebHelper.getUsername());
-        order.setOrderId(UUIDUtils.uuid());
-        order.setStatus(OrderStatusEnum.NOT_PAY.getCode());
+    private void orderInit(OrderPO orderPO) {
+        orderPO.setCreator(WebHelper.getUsername());
+        orderPO.setModifier(WebHelper.getUsername());
+        orderPO.setOrderId(UUIDUtils.uuid());
+        orderPO.setStatus(OrderStatusEnum.NOT_PAY.getCode());
     }
 
     /**
      * 计算订单详情内容
      */
-    private void orderDetailCalculate(Order order) {
-        List<OrderDetailPO> orderDetails = order.getOrderDetails();
+    private void orderDetailInit(OrderPO orderPO) {
+        List<OrderDetailPO> orderDetails = orderPO.getOrderDetails();
+        final Double[] totalPrice = {0d};
         orderDetails.forEach(detail -> {
             detail.setCreator(WebHelper.getUsername());
             detail.setModifier(WebHelper.getUsername());
-            detail.setOrderId(order.getOrderId());
+            detail.setOrderId(orderPO.getOrderId());
             detail.setStatus(StatusEnum.NORMAL.getCode());
-            detail.setTotalPrice(detail.getDishesPrice().multiply(new BigDecimal(detail.getTotal())));
-            BigDecimal totalPrice = order.getTotalPrice();
-            if (ObjectUtils.isEmpty(totalPrice)) {
-                totalPrice = new BigDecimal(0);
-            }
-            order.setTotalPrice(totalPrice.add(detail.getTotalPrice()));
+            detail.setTotalPrice(detail.getDishesPrice() * detail.getTotal());
+            totalPrice[0] += detail.getTotalPrice();
             orderDetailMapper.insertSelective(detail);
         });
+        orderPO.setTotalPrice(totalPrice[0]);
     }
 
     @Override
-    public PageInfo<Order> findList(OrderQuery query) {
+    public PageInfo<OrderPO> findList(OrderQuery query) {
         PageHelper.startPage(query.getCurrentPage(), query.getPageSize());
         OrderExample example = new OrderExample();
         OrderExample.Criteria criteria = example.createCriteria();
@@ -95,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
         if (!ObjectUtils.isEmpty(query.getStatus())) {
             criteria.andStatusEqualTo(query.getStatus());
         }
-        List<Order> list = orderMapper.selectByExample(example);
+        List<OrderPO> list = orderMapper.selectByExample(example);
         return new PageInfo<>(list);
     }
 
@@ -104,12 +101,12 @@ public class OrderServiceImpl implements OrderService {
         PageHelper.startPage(1, 1);
         OrderExample example = new OrderExample();
         example.createCriteria().andOrderIdEqualTo(orderId);
-        List<Order> orders = orderMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(orders)) {
-            Order order = orders.get(0);
-            orderStatusCheck(OrderEvent.PAYING, OrderStatusEnum.fromCode(order.getStatus()));
-            order.setStatus(OrderStatusEnum.PAID.getCode());
-            return orderMapper.updateByPrimaryKey(order) == 1;
+        List<OrderPO> orderPOS = orderMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(orderPOS)) {
+            OrderPO orderPO = orderPOS.get(0);
+            orderStatusCheck(OrderEvent.PAYING, OrderStatusEnum.fromCode(orderPO.getStatus()));
+            orderPO.setStatus(OrderStatusEnum.PAID.getCode());
+            return orderMapper.updateByPrimaryKey(orderPO) == 1;
         }
         return Boolean.FALSE;
     }
@@ -120,15 +117,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOne(OrderQuery query) {
+    public OrderPO findOne(OrderQuery query) {
         Assert.isNull(query, "query is null");
         Assert.isNull(query.getOrderId(), "orderId is empty");
         PageHelper.startPage(1, 1);
         OrderExample example = new OrderExample();
         example.createCriteria().andOrderIdEqualTo(query.getOrderId());
-        List<Order> orders = orderMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(orders)) {
-            return orders.get(0);
+        List<OrderPO> orderPOS = orderMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(orderPOS)) {
+            return orderPOS.get(0);
         }
         return null;
     }
@@ -136,14 +133,29 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean delete(Integer id) {
         Assert.isNull(id, "id is null");
-        Order order = orderMapper.selectByPrimaryKey(id);
-        orderStatusCheck(OrderEvent.DELETE, OrderStatusEnum.fromCode(order.getStatus()));
-        order.setStatus(OrderStatusEnum.DELETED.getCode());
-        return orderMapper.updateByPrimaryKey(order) == 1;
+        OrderPO orderPO = orderMapper.selectByPrimaryKey(id);
+        orderStatusCheck(OrderEvent.DELETE, OrderStatusEnum.fromCode(orderPO.getStatus()));
+        orderPO.setStatus(OrderStatusEnum.DELETED.getCode());
+        return orderMapper.updateByPrimaryKey(orderPO) == 1;
     }
 
+    /**
+     * 计算总营收 与 当日营收
+     * @return
+     */
     @Override
     public Map statistical() {
+//        LocalDate localDate = LocalDate.now().plusDays(-1);
+//        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+//        Date yesterday = Date.from(zonedDateTime.toInstant());
+//        List<OrderPO> orders = orderMapper.selectByExample(new OrderExample());
+//        AtomicReference<Double> totalPrice = new AtomicReference<>(0d);
+//        AtomicReference<Double> yesterdayPrice = new AtomicReference<>(0d);
+//        Map<String, Object> res = new HashMap<>(8);
+//        orders.forEach(order -> {
+//            totalPrice.updateAndGet(v -> v + order.getTotalPrice().doubleValue());
+////            if (order.getCreated().compareTo())
+//        });
         return null;
     }
 
@@ -170,6 +182,9 @@ public class OrderServiceImpl implements OrderService {
                 break;
             }
             case DELETE: {
+                if (orderStatus.equals(OrderStatusEnum.ONGOING)) {
+                    throw new AppException("当前订单进行中，无法删除", HttpStatus.FORBIDDEN.value());
+                }
                 break;
             }
             default: {

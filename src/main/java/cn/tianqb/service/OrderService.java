@@ -1,6 +1,6 @@
 package cn.tianqb.service;
 
-import cn.tianqb.pojo.po.Order;
+import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.query.OrderQuery;
 import cn.tianqb.pojo.vo.CommentVO;
 import com.github.pagehelper.PageInfo;
@@ -14,15 +14,15 @@ import java.util.Map;
  */
 public interface OrderService {
 
-    Boolean create(Order order);
+    Boolean create(OrderPO orderPO);
 
-    PageInfo<Order> findList(OrderQuery query);
+    PageInfo<OrderPO> findList(OrderQuery query);
 
     Boolean pay(String orderId);
 
     Boolean comment(CommentVO commentVO);
 
-    Order findOne(OrderQuery query);
+    OrderPO findOne(OrderQuery query);
 
     Boolean delete(Integer id);
 

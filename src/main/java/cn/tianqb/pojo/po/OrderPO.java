@@ -3,7 +3,6 @@ package cn.tianqb.pojo.po;
 import cn.tianqb.pojo.BaseEntity;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
  * @date 2021/3/2 21:23
  */
 @Data
-public class Order extends BaseEntity {
+public class OrderPO extends BaseEntity {
     private static final long serialVersionUID = 1403793888331845973L;
 
     /**
@@ -23,7 +22,7 @@ public class Order extends BaseEntity {
     /**
      * 订单总价
      */
-    private BigDecimal totalPrice;
+    private Double totalPrice;
 
     /**
      * 订单电话

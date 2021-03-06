@@ -1,24 +1,14 @@
 package cn.tianqb.mapper;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
-import cn.tianqb.pojo.example.Dishes;
+import cn.tianqb.pojo.example.DishesExample;
 import cn.tianqb.pojo.example.DishesExample.Criteria;
 import cn.tianqb.pojo.example.DishesExample.Criterion;
-import cn.tianqb.pojo.example.DishesExample;
+import cn.tianqb.pojo.po.DishesPO;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class DishesSqlProvider {
 
@@ -37,62 +27,62 @@ public class DishesSqlProvider {
         return SQL();
     }
 
-    public String insertSelective(Dishes record) {
+    public String insertSelective(DishesPO record) {
         BEGIN();
         INSERT_INTO("dishes");
-        
+
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getName() != null) {
             VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             VALUES("description", "#{description,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getPrice() != null) {
-            VALUES("price", "#{price,jdbcType=DECIMAL}");
+            VALUES("price", "#{price,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getTaste() != null) {
             VALUES("taste", "#{taste,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             VALUES("url", "#{url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             VALUES("status", "#{status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreated() != null) {
             VALUES("created", "#{created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             VALUES("modified", "#{modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             VALUES("creator", "#{creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             VALUES("modifier", "#{modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCategoryId() != null) {
             VALUES("category_id", "#{categoryId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCategory() != null) {
             VALUES("category", "#{category,jdbcType=VARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -117,73 +107,73 @@ public class DishesSqlProvider {
         SELECT("category");
         FROM("dishes");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Dishes record = (Dishes) parameter.get("record");
+        DishesPO record = (DishesPO) parameter.get("record");
         DishesExample example = (DishesExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("dishes");
-        
+
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getName() != null) {
             SET("name = #{record.name,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{record.description,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getPrice() != null) {
-            SET("price = #{record.price,jdbcType=DECIMAL}");
+            SET("price = #{record.price,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getTaste() != null) {
             SET("taste = #{record.taste,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             SET("url = #{record.url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             SET("status = #{record.status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreated() != null) {
             SET("created = #{record.created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             SET("modified = #{record.modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             SET("creator = #{record.creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             SET("modifier = #{record.modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCategoryId() != null) {
             SET("category_id = #{record.categoryId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCategory() != null) {
             SET("category = #{record.category,jdbcType=VARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -191,11 +181,11 @@ public class DishesSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("dishes");
-        
+
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("name = #{record.name,jdbcType=VARCHAR}");
         SET("description = #{record.description,jdbcType=VARCHAR}");
-        SET("price = #{record.price,jdbcType=DECIMAL}");
+        SET("price = #{record.price,jdbcType=DOUBLE}");
         SET("taste = #{record.taste,jdbcType=VARCHAR}");
         SET("url = #{record.url,jdbcType=VARCHAR}");
         SET("status = #{record.status,jdbcType=INTEGER}");
@@ -205,66 +195,66 @@ public class DishesSqlProvider {
         SET("modifier = #{record.modifier,jdbcType=VARCHAR}");
         SET("category_id = #{record.categoryId,jdbcType=INTEGER}");
         SET("category = #{record.category,jdbcType=VARCHAR}");
-        
+
         DishesExample example = (DishesExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(Dishes record) {
+    public String updateByPrimaryKeySelective(DishesPO record) {
         BEGIN();
         UPDATE("dishes");
-        
+
         if (record.getName() != null) {
             SET("name = #{name,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{description,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getPrice() != null) {
-            SET("price = #{price,jdbcType=DECIMAL}");
+            SET("price = #{price,jdbcType=DOUBLE}");
         }
-        
+
         if (record.getTaste() != null) {
             SET("taste = #{taste,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUrl() != null) {
             SET("url = #{url,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getStatus() != null) {
             SET("status = #{status,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreated() != null) {
             SET("created = #{created,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getModified() != null) {
             SET("modified = #{modified,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getCreator() != null) {
             SET("creator = #{creator,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModifier() != null) {
             SET("modifier = #{modifier,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getCategoryId() != null) {
             SET("category_id = #{categoryId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCategory() != null) {
             SET("category = #{category,jdbcType=VARCHAR}");
         }
-        
+
         WHERE("id = #{id,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -272,7 +262,7 @@ public class DishesSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -294,7 +284,7 @@ public class DishesSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -306,7 +296,7 @@ public class DishesSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -317,7 +307,7 @@ public class DishesSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
@@ -355,7 +345,7 @@ public class DishesSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

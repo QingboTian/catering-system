@@ -7,7 +7,7 @@ public class UserInfo {
 
     private String username;
 
-    private String passsword;
+    private String password;
 
     private Date birthday;
 
@@ -43,12 +43,12 @@ public class UserInfo {
         this.username = username == null ? null : username.trim();
     }
 
-    public String getPasssword() {
-        return passsword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasssword(String passsword) {
-        this.passsword = passsword == null ? null : passsword.trim();
+    public void setPassword(String passsword) {
+        this.password = passsword == null ? null : passsword.trim();
     }
 
     public Date getBirthday() {

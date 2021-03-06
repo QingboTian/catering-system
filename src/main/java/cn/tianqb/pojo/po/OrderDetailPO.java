@@ -3,8 +3,6 @@ package cn.tianqb.pojo.po;
 import cn.tianqb.pojo.BaseEntity;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 /**
  * @author tianqingbo3
  * @date 2021/3/3 0:11
@@ -27,12 +25,12 @@ public class OrderDetailPO extends BaseEntity {
     /**
      * 明细总价格
      */
-    private BigDecimal totalPrice;
+    private Double totalPrice;
 
     /**
      * 明细总价
      */
-    private BigDecimal dishesPrice;
+    private Double dishesPrice;
 
     /**
      * 订单Id

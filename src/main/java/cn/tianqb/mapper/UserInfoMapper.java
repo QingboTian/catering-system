@@ -1,6 +1,6 @@
 package cn.tianqb.mapper;
 
-import cn.tianqb.pojo.po.UserInfo;
+import cn.tianqb.pojo.po.UserInfo ;
 import cn.tianqb.pojo.example.UserInfoExample;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -23,13 +23,13 @@ public interface UserInfoMapper {
 
     @Insert({
         "insert into user_info (id, username, ",
-        "passsword, birthday, ",
+        "password, birthday, ",
         "status, created, ",
         "modified, creator, ",
         "modifier, role_id, ",
         "phone, mail)",
         "values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, ",
-        "#{passsword,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, ",
+        "#{password,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, ",
         "#{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, ",
         "#{modified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, ",
         "#{modifier,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, ",
@@ -44,7 +44,7 @@ public interface UserInfoMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
-        @Result(column="passsword", property="passsword", jdbcType=JdbcType.VARCHAR),
+        @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="birthday", property="birthday", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
         @Result(column="created", property="created", jdbcType=JdbcType.TIMESTAMP),
@@ -59,7 +59,7 @@ public interface UserInfoMapper {
 
     @Select({
         "select",
-        "id, username, passsword, birthday, status, created, modified, creator, modifier, ",
+        "id, username, password, birthday, status, created, modified, creator, modifier, ",
         "role_id, phone, mail",
         "from user_info",
         "where id = #{id,jdbcType=INTEGER}"
@@ -67,7 +67,7 @@ public interface UserInfoMapper {
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
-        @Result(column="passsword", property="passsword", jdbcType=JdbcType.VARCHAR),
+        @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="birthday", property="birthday", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
         @Result(column="created", property="created", jdbcType=JdbcType.TIMESTAMP),
@@ -92,7 +92,7 @@ public interface UserInfoMapper {
     @Update({
         "update user_info",
         "set username = #{username,jdbcType=VARCHAR},",
-          "passsword = #{passsword,jdbcType=VARCHAR},",
+          "password = #{password,jdbcType=VARCHAR},",
           "birthday = #{birthday,jdbcType=TIMESTAMP},",
           "status = #{status,jdbcType=INTEGER},",
           "created = #{created,jdbcType=TIMESTAMP},",

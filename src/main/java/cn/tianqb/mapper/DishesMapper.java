@@ -7,7 +7,6 @@ import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
 
-
 @Mapper
 public interface DishesMapper {
     @SelectProvider(type=DishesSqlProvider.class, method="countByExample")
@@ -30,7 +29,7 @@ public interface DishesMapper {
         "creator, modifier, ",
         "category_id, category)",
         "values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, ",
-        "#{description,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, ",
+        "#{description,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, ",
         "#{taste,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, ",
         "#{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, ",
         "#{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, ",
@@ -46,7 +45,7 @@ public interface DishesMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
-        @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
+        @Result(column="price", property="price", jdbcType=JdbcType.DOUBLE),
         @Result(column="taste", property="taste", jdbcType=JdbcType.VARCHAR),
         @Result(column="url", property="url", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
@@ -70,7 +69,7 @@ public interface DishesMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
-        @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
+        @Result(column="price", property="price", jdbcType=JdbcType.DOUBLE),
         @Result(column="taste", property="taste", jdbcType=JdbcType.VARCHAR),
         @Result(column="url", property="url", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
@@ -96,7 +95,7 @@ public interface DishesMapper {
         "update dishes",
         "set name = #{name,jdbcType=VARCHAR},",
           "description = #{description,jdbcType=VARCHAR},",
-          "price = #{price,jdbcType=DECIMAL},",
+          "price = #{price,jdbcType=DOUBLE},",
           "taste = #{taste,jdbcType=VARCHAR},",
           "url = #{url,jdbcType=VARCHAR},",
           "status = #{status,jdbcType=INTEGER},",

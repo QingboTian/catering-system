@@ -1,24 +1,14 @@
 package cn.tianqb.mapper;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
-import cn.tianqb.pojo.po.UserInfo;
+import cn.tianqb.pojo.po.UserInfo ;
+import cn.tianqb.pojo.example.UserInfoExample;
 import cn.tianqb.pojo.example.UserInfoExample.Criteria;
 import cn.tianqb.pojo.example.UserInfoExample.Criterion;
-import cn.tianqb.pojo.example.UserInfoExample;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class UserInfoSqlProvider {
 
@@ -49,7 +39,7 @@ public class UserInfoSqlProvider {
             VALUES("username", "#{username,jdbcType=VARCHAR}");
         }
 
-        if (record.getPasssword() != null) {
+        if (record.getPassword() != null) {
             VALUES("passsword", "#{passsword,jdbcType=VARCHAR}");
         }
 
@@ -135,7 +125,7 @@ public class UserInfoSqlProvider {
             SET("username = #{record.username,jdbcType=VARCHAR}");
         }
 
-        if (record.getPasssword() != null) {
+        if (record.getPassword() != null) {
             SET("passsword = #{record.passsword,jdbcType=VARCHAR}");
         }
 
@@ -209,7 +199,7 @@ public class UserInfoSqlProvider {
             SET("username = #{username,jdbcType=VARCHAR}");
         }
 
-        if (record.getPasssword() != null) {
+        if (record.getPassword() != null) {
             SET("passsword = #{passsword,jdbcType=VARCHAR}");
         }
 
