@@ -1,8 +1,9 @@
 package cn.tianqb.interceptor;
 
 import cn.tianqb.common.LoginContext;
-import cn.tianqb.exception.NotLoginException;
+import cn.tianqb.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/4 21:57  
+ * @date 2021/3/4 21:57
  * @version v1.0
  */
 @Component
@@ -26,14 +27,15 @@ public class SsoInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
         if (ObjectUtils.isEmpty(token)) {
-            throw new NotLoginException(HttpStatus.UNAUTHORIZED.value(), "not login!");
+            throw new AppException("not login!", HttpStatus.UNAUTHORIZED.value());
         }
         HttpSession session = request.getSession();
         Object object = session.getAttribute(token);
         if (ObjectUtils.isEmpty(object)) {
-            throw new NotLoginException(HttpStatus.UNAUTHORIZED.value(), "not login!");
+            throw new AppException("not login!", HttpStatus.UNAUTHORIZED.value());
         }
-        LoginContext loginContext = (LoginContext) object;
+        LoginContext loginContext = new LoginContext();
+        BeanUtils.copyProperties(object, loginContext);
         log.info("当前登录用户：{}", loginContext);
         return true;
     }

@@ -1,5 +1,6 @@
 package cn.tianqb.service.impl;
 
+import cn.tianqb.common.Assert;
 import cn.tianqb.enums.StatusEnum;
 import cn.tianqb.mapper.CategoryMapper;
 import cn.tianqb.pojo.example.CategoryExample;
@@ -31,6 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean create(CategoryPO categoryPO) {
         categoryPO.setStatus(StatusEnum.NORMAL.getCode());
+        Assert.isNull(categoryPO, "category is null");
+        Assert.isNull(categoryPO.getName(), "name is empty");
         if (ObjectUtils.isEmpty(categoryPO.getParentId()) || categoryPO.getParentId() == 0) {
             categoryPO.setLevel(1);
         } else {
@@ -88,6 +91,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryPO findOne(CategoryQuery query) {
+        Assert.isNull(query, "query is null");
+        Assert.isNull(query.getId(), "id is empty");
         return categoryMapper.selectByPrimaryKey(query.getId());
     }
 }

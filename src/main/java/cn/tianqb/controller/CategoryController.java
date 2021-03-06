@@ -1,6 +1,5 @@
 package cn.tianqb.controller;
 
-import cn.tianqb.common.PageBean;
 import cn.tianqb.common.WebResult;
 import cn.tianqb.pojo.po.CategoryPO;
 import cn.tianqb.pojo.query.CategoryQuery;
@@ -9,10 +8,7 @@ import cn.tianqb.utils.WebHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +27,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/create")
-    public WebResult<Boolean> create(CategoryPO categoryPO) {
+    public WebResult<Boolean> create(@RequestBody CategoryPO categoryPO) {
         categoryPO.setCreator(WebHelper.getUsername());
         categoryPO.setModifier(WebHelper.getUsername());
         return WebResult.ok(categoryService.create(categoryPO));

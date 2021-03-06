@@ -25,7 +25,8 @@ public class ExceptionController {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public WebResult exception() {
+    public WebResult exception(Exception ex) {
+        log.error("Server exception", ex);
         return WebResult.build(HttpStatus.SERVICE_UNAVAILABLE.value(), "服务异常");
     }
 

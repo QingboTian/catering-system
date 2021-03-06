@@ -2,10 +2,13 @@ package cn.tianqb.controller;
 
 import cn.tianqb.common.LoginContext;
 import cn.tianqb.common.WebResult;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.Serializable;
 
 /**
  * @author tianqingbo3
@@ -22,16 +25,20 @@ public class UserController {
         return WebResult.ok(new User());
     }
 
-    static class User {
-        private String username;
-        private String phone;
-        private String mail;
 
-        User() {
-            LoginContext loginContext = LoginContext.get();
-            this.username = loginContext.getUsername();
-            this.phone = loginContext.getPhone();
-            this.mail = loginContext.getMail();
-        }
+}
+
+@Data
+class User implements Serializable {
+    private static final long serialVersionUID = 521193560999546734L;
+    private String username;
+    private String phone;
+    private String mail;
+
+    User() {
+        LoginContext loginContext = LoginContext.get();
+        this.username = loginContext.getUsername();
+        this.phone = loginContext.getPhone();
+        this.mail = loginContext.getMail();
     }
 }

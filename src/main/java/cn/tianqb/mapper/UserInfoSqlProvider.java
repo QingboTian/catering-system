@@ -40,7 +40,7 @@ public class UserInfoSqlProvider {
         }
 
         if (record.getPassword() != null) {
-            VALUES("passsword", "#{passsword,jdbcType=VARCHAR}");
+            VALUES("password", "#{password,jdbcType=VARCHAR}");
         }
 
         if (record.getBirthday() != null) {
@@ -90,7 +90,7 @@ public class UserInfoSqlProvider {
             SELECT("id");
         }
         SELECT("username");
-        SELECT("passsword");
+        SELECT("password");
         SELECT("birthday");
         SELECT("status");
         SELECT("created");
@@ -126,7 +126,7 @@ public class UserInfoSqlProvider {
         }
 
         if (record.getPassword() != null) {
-            SET("passsword = #{record.passsword,jdbcType=VARCHAR}");
+            SET("password = #{record.password,jdbcType=VARCHAR}");
         }
 
         if (record.getBirthday() != null) {
@@ -175,7 +175,7 @@ public class UserInfoSqlProvider {
 
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("username = #{record.username,jdbcType=VARCHAR}");
-        SET("passsword = #{record.passsword,jdbcType=VARCHAR}");
+        SET("password = #{record.password,jdbcType=VARCHAR}");
         SET("birthday = #{record.birthday,jdbcType=TIMESTAMP}");
         SET("status = #{record.status,jdbcType=INTEGER}");
         SET("created = #{record.created,jdbcType=TIMESTAMP}");
@@ -200,7 +200,7 @@ public class UserInfoSqlProvider {
         }
 
         if (record.getPassword() != null) {
-            SET("passsword = #{passsword,jdbcType=VARCHAR}");
+            SET("password = #{password,jdbcType=VARCHAR}");
         }
 
         if (record.getBirthday() != null) {

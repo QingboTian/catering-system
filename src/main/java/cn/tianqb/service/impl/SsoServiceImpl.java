@@ -81,8 +81,6 @@ public class SsoServiceImpl implements SsoService {
         checkExist(loginVO);
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(loginVO, userInfo);
-        userInfo.setCreated(new Date());
-        userInfo.setModified(new Date());
         userInfo.setPassword(MD5Utils.md5(loginVO.getPassword()));
         userInfo.setStatus(StatusEnum.NORMAL.getCode());
         return userInfoMapper.insertSelective(userInfo) == 1;
@@ -106,7 +104,7 @@ public class SsoServiceImpl implements SsoService {
         }
         example.or(username);
         List<UserInfo> list = userInfoMapper.selectByExample(example);
-        Assert.isTrue(CollectionUtils.isEmpty(list), "The current user already exists");
+        Assert.notTrue(CollectionUtils.isEmpty(list), "The current user already exists");
     }
 
     /**

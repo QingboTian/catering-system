@@ -47,8 +47,8 @@ public class UserInfo {
         return password;
     }
 
-    public void setPassword(String passsword) {
-        this.password = passsword == null ? null : passsword.trim();
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
     public Date getBirthday() {

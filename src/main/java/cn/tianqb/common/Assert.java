@@ -42,6 +42,12 @@ public class Assert {
         }
     }
 
+    public static void notTrue(Boolean exp, String message) throws AppException {
+        if (!exp) {
+            throw new AppException(message, HttpStatus.FORBIDDEN.value());
+        }
+    }
+
     public static void isEmpty(String str, String message) throws AppException {
         if (StringUtils.isEmpty(str)) {
             throw new AppException(message, HttpStatus.FORBIDDEN.value());

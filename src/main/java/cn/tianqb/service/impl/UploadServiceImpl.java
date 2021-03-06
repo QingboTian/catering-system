@@ -16,7 +16,7 @@ import java.util.StringJoiner;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/3 22:04  
+ * @date 2021/3/3 22:04
  * @version v1.0
  */
 @Service
@@ -28,16 +28,17 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     public String uploadImg(MultipartFile file) {
-        String name = file.getName();
+        String init = init(basePath);
+        String name = file.getOriginalFilename();
         InputStream inputStream = null;
         FileOutputStream fos = null;
         try {
             inputStream = file.getInputStream();
-            StringJoiner fileName = new StringJoiner("/");
-            fileName.add(basePath).add("img").add(UUIDUtils.uuid() + "." + getExt(name));
-            fos = new FileOutputStream(new File(fileName.toString()));
+            StringJoiner targetPath = new StringJoiner("/");
+            targetPath.add(init).add(UUIDUtils.uuid() + getExt(name));
+            fos = new FileOutputStream(new File(targetPath.toString()));
             StreamUtils.copy(inputStream, fos);
-            return fileName.toString().replace(basePath, "");
+            return targetPath.toString().replace(basePath, "");
         } catch (IOException e) {
             log.error("上传文件发生错误", e);
         } finally {
@@ -57,6 +58,16 @@ public class UploadServiceImpl implements UploadService {
             }
         }
         return null;
+    }
+
+    private String init(String path) {
+        String str = path + "/static";
+        File file = new File(str);
+        if (!file.exists()) {
+            boolean res = file.mkdirs();
+            log.info("文件创建结果：{}", res);
+        }
+        return str;
     }
 
     private String getExt(String fileName) {
