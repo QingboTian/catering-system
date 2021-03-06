@@ -27,13 +27,15 @@ public interface DishesMapper {
         "taste, url, status, ",
         "created, modified, ",
         "creator, modifier, ",
-        "category_id, category)",
+        "category_id, category, ",
+        "cost_price, unit)",
         "values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, ",
         "#{description,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, ",
         "#{taste,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, ",
         "#{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, ",
         "#{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, ",
-        "#{categoryId,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR})"
+        "#{categoryId,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, ",
+        "#{costPrice,jdbcType=DOUBLE}, #{unit,jdbcType=VARCHAR})"
     })
     int insert(DishesPO record);
 
@@ -54,14 +56,16 @@ public interface DishesMapper {
         @Result(column="creator", property="creator", jdbcType=JdbcType.VARCHAR),
         @Result(column="modifier", property="modifier", jdbcType=JdbcType.VARCHAR),
         @Result(column="category_id", property="categoryId", jdbcType=JdbcType.INTEGER),
-        @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR)
+        @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR),
+        @Result(column="cost_price", property="costPrice", jdbcType=JdbcType.DOUBLE),
+        @Result(column="unit", property="unit", jdbcType=JdbcType.VARCHAR)
     })
     List<DishesPO> selectByExample(DishesExample example);
 
     @Select({
         "select",
         "id, name, description, price, taste, url, status, created, modified, creator, ",
-        "modifier, category_id, category",
+        "modifier, category_id, category, cost_price, unit",
         "from dishes",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -78,7 +82,9 @@ public interface DishesMapper {
         @Result(column="creator", property="creator", jdbcType=JdbcType.VARCHAR),
         @Result(column="modifier", property="modifier", jdbcType=JdbcType.VARCHAR),
         @Result(column="category_id", property="categoryId", jdbcType=JdbcType.INTEGER),
-        @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR)
+        @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR),
+        @Result(column="cost_price", property="costPrice", jdbcType=JdbcType.DOUBLE),
+        @Result(column="unit", property="unit", jdbcType=JdbcType.VARCHAR)
     })
     DishesPO selectByPrimaryKey(Integer id);
 
@@ -104,7 +110,9 @@ public interface DishesMapper {
           "creator = #{creator,jdbcType=VARCHAR},",
           "modifier = #{modifier,jdbcType=VARCHAR},",
           "category_id = #{categoryId,jdbcType=INTEGER},",
-          "category = #{category,jdbcType=VARCHAR}",
+          "category = #{category,jdbcType=VARCHAR},",
+          "cost_price = #{costPrice,jdbcType=DOUBLE},",
+          "unit = #{unit,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(DishesPO record);

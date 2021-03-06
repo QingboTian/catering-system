@@ -39,7 +39,23 @@ public class DishesPO extends BaseEntity {
      */
     private String url;
 
+    /**
+     * 分类Id
+     */
     private Integer categoryId;
 
+    /**
+     * 分类名称
+     */
     private String category;
+
+    /**
+     * 成本价
+     */
+    private Double costPrice;
+
+    /**
+     * 单位
+     */
+    private String unit;
 }

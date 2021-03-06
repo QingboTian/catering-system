@@ -15,6 +15,9 @@ spring:
     spring.druid.minEvictableIdleTimeMillis: 300000
   resources:
     static-locations: file:${upload.base-path}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 upload:
   access-url: /static/file/

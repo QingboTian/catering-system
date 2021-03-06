@@ -45,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Boolean delete(Integer id) {
+        Assert.isNull(id, "id is empty");
         CategoryPO category = categoryMapper.selectByPrimaryKey(id);
         category.setModifier(WebHelper.getUsername());
         category.setStatus(StatusEnum.DELETED.getCode());

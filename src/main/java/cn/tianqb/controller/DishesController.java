@@ -4,14 +4,10 @@ import cn.tianqb.common.WebResult;
 import cn.tianqb.pojo.po.DishesPO;
 import cn.tianqb.pojo.query.DishesQuery;
 import cn.tianqb.service.DishesService;
-import cn.tianqb.utils.WebHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 菜单
@@ -28,10 +24,8 @@ public class DishesController {
     private DishesService dishesService;
 
     @PostMapping("/create")
-    public WebResult<Boolean> create(DishesPO dishesPO) {
-        dishesPO.setCreator(WebHelper.getUsername());
-        dishesPO.setModifier(WebHelper.getUsername());
-        return WebResult.ok(dishesService.create(dishesPO));
+    public WebResult<Boolean> create(@RequestBody DishesPO dishes) {
+        return WebResult.ok(dishesService.create(dishes));
     }
 
     @PostMapping("/delete")
@@ -40,8 +34,8 @@ public class DishesController {
     }
 
     @PostMapping("/update")
-    public WebResult<Boolean> update(DishesPO dishesPO) {
-        return WebResult.ok(dishesService.update(dishesPO));
+    public WebResult<Boolean> update(@RequestBody DishesPO dishes) {
+        return WebResult.ok(dishesService.update(dishes));
     }
 
     @GetMapping("/list")

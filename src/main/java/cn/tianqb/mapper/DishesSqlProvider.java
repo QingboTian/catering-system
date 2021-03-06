@@ -83,6 +83,14 @@ public class DishesSqlProvider {
             VALUES("category", "#{category,jdbcType=VARCHAR}");
         }
 
+        if (record.getCostPrice() != null) {
+            VALUES("cost_price", "#{costPrice,jdbcType=DOUBLE}");
+        }
+
+        if (record.getUnit() != null) {
+            VALUES("unit", "#{unit,jdbcType=VARCHAR}");
+        }
+
         return SQL();
     }
 
@@ -105,6 +113,8 @@ public class DishesSqlProvider {
         SELECT("modifier");
         SELECT("category_id");
         SELECT("category");
+        SELECT("cost_price");
+        SELECT("unit");
         FROM("dishes");
         applyWhere(example, false);
 
@@ -174,6 +184,14 @@ public class DishesSqlProvider {
             SET("category = #{record.category,jdbcType=VARCHAR}");
         }
 
+        if (record.getCostPrice() != null) {
+            SET("cost_price = #{record.costPrice,jdbcType=DOUBLE}");
+        }
+
+        if (record.getUnit() != null) {
+            SET("unit = #{record.unit,jdbcType=VARCHAR}");
+        }
+
         applyWhere(example, true);
         return SQL();
     }
@@ -195,6 +213,8 @@ public class DishesSqlProvider {
         SET("modifier = #{record.modifier,jdbcType=VARCHAR}");
         SET("category_id = #{record.categoryId,jdbcType=INTEGER}");
         SET("category = #{record.category,jdbcType=VARCHAR}");
+        SET("cost_price = #{record.costPrice,jdbcType=DOUBLE}");
+        SET("unit = #{record.unit,jdbcType=VARCHAR}");
 
         DishesExample example = (DishesExample) parameter.get("example");
         applyWhere(example, true);
@@ -251,6 +271,14 @@ public class DishesSqlProvider {
 
         if (record.getCategory() != null) {
             SET("category = #{category,jdbcType=VARCHAR}");
+        }
+
+        if (record.getCostPrice() != null) {
+            SET("cost_price = #{costPrice,jdbcType=DOUBLE}");
+        }
+
+        if (record.getUnit() != null) {
+            SET("unit = #{unit,jdbcType=VARCHAR}");
         }
 
         WHERE("id = #{id,jdbcType=INTEGER}");
