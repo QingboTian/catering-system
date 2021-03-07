@@ -8,11 +8,14 @@ import cn.tianqb.mapper.UserInfoMapper;
 import cn.tianqb.pojo.AccessToken;
 import cn.tianqb.pojo.example.UserInfoExample;
 import cn.tianqb.pojo.po.UserInfo;
+import cn.tianqb.pojo.query.UserQuery;
 import cn.tianqb.pojo.vo.LoginVO;
 import cn.tianqb.service.SsoService;
 import cn.tianqb.utils.MD5Utils;
 import cn.tianqb.utils.UUIDUtils;
+import cn.tianqb.utils.WebHelper;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +87,37 @@ public class SsoServiceImpl implements SsoService {
         userInfo.setPassword(MD5Utils.md5(loginVO.getPassword()));
         userInfo.setStatus(StatusEnum.NORMAL.getCode());
         return userInfoMapper.insertSelective(userInfo) == 1;
+    }
+
+    @Override
+    public PageInfo<UserInfo> list(UserQuery query) {
+        PageHelper.startPage(query.getCurrentPage(), query.getPageSize());
+        UserInfoExample example = new UserInfoExample();
+        example.setOrderByClause("created desc");
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        if (!ObjectUtils.isEmpty(query.getStatus())) {
+            criteria.andStatusEqualTo(query.getStatus());
+        }
+        if (!ObjectUtils.isEmpty(query.getId())) {
+            criteria.andIdEqualTo(query.getId());
+        }
+        if (!ObjectUtils.isEmpty(query.getUsername())) {
+            criteria.andUsernameEqualTo(query.getUsername());
+        }
+        List<UserInfo> list = userInfoMapper.selectByExample(example);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public Boolean delete(Integer id) {
+        Assert.isNull(id, "id is empty");
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
+        if (!ObjectUtils.isEmpty(userInfo)) {
+            userInfo.setModifier(WebHelper.getUsername());
+            userInfo.setStatus(StatusEnum.DELETED.getCode());
+            return userInfoMapper.updateByPrimaryKey(userInfo) == 1;
+        }
+        return Boolean.TRUE;
     }
 
     /**

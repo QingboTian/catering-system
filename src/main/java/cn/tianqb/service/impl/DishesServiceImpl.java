@@ -79,6 +79,7 @@ public class DishesServiceImpl implements DishesService {
     public PageInfo<DishesPO> findList(DishesQuery query) {
         PageHelper.startPage(query.getCurrentPage(), query.getPageSize());
         DishesExample example = new DishesExample();
+        example.setOrderByClause("created desc");
         DishesExample.Criteria criteria = example.createCriteria();
         if (!ObjectUtils.isEmpty(query.getName())) {
             criteria.andNameLike("%" + query.getName() + "%");

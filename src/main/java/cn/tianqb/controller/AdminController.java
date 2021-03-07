@@ -1,9 +1,11 @@
 package cn.tianqb.controller;
 
-import cn.tianqb.common.PageBean;
 import cn.tianqb.common.WebResult;
-import cn.tianqb.pojo.po.Administrator;
+import cn.tianqb.enums.RoleEnum;
+import cn.tianqb.pojo.query.UserQuery;
+import cn.tianqb.pojo.vo.LoginVO;
 import cn.tianqb.service.SsoService;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,22 +29,23 @@ public class AdminController {
 
     /**
      * 拉黑
-     * @param administrator
+     * @param id
      * @return
      */
     @PostMapping("/delete")
-    public WebResult delete(Administrator administrator) {
-        return null;
+    public WebResult delete(Integer id) {
+        return WebResult.ok(ssoService.delete(id));
     }
 
     @GetMapping("/list")
-    public WebResult<PageBean> findList() {
-        return null;
+    public WebResult<PageInfo> findList(UserQuery query) {
+        return WebResult.ok(ssoService.list(query));
     }
 
     @GetMapping("/create")
-    public WebResult<Boolean> create() {
-        return null;
+    public WebResult<Boolean> create(LoginVO loginVO) {
+        loginVO.setRoleId(RoleEnum.ADMINISTRATOR.getCode());
+        return WebResult.ok(ssoService.registry(loginVO));
     }
 
 }

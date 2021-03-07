@@ -106,6 +106,7 @@ public class OrderServiceImpl implements OrderService {
     public PageInfo<OrderPO> findList(OrderQuery query) {
         PageHelper.startPage(query.getCurrentPage(), query.getPageSize());
         OrderExample example = new OrderExample();
+        example.setOrderByClause("created desc");
         OrderExample.Criteria criteria = example.createCriteria();
         if (!ObjectUtils.isEmpty(query.getOrderId())) {
             criteria.andOrderIdEqualTo(query.getOrderId());

@@ -1,9 +1,13 @@
 package cn.tianqb.controller;
 
+import cn.tianqb.common.Assert;
 import cn.tianqb.common.WebResult;
+import cn.tianqb.pojo.po.DishesPO;
 import cn.tianqb.pojo.po.OrderDetailPO;
+import cn.tianqb.pojo.query.DishesQuery;
+import cn.tianqb.service.DishesService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * 购物车
@@ -25,51 +28,84 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Slf4j
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 public class ShoppingCartController {
 
+    @Autowired
+    private DishesService dishesService;
+
     /**
-     *
      * @param request
-     * @param detail
-     * @param num 增加或减少的数量
+     * @param dishesId
+     * @param num      增加或减少的数量
      * @return
      */
     @PostMapping("/addOrReduce")
-    public WebResult addShoppingCart(HttpServletRequest request, OrderDetailPO detail, Integer num) {
+    public WebResult addShoppingCart(HttpServletRequest request, Integer dishesId, Integer num) {
+        Assert.isNull(dishesId, "dishesId is empty");
+        Assert.isNull(num, "num is empty");
+        OrderDetailPO detail = new OrderDetailPO();
+
+        DishesQuery query = new DishesQuery();
+        query.setId(dishesId);
+        DishesPO dishes = dishesService.findOne(query);
+        Assert.isNull(dishes, "dishes is null");
+
         HttpSession session = request.getSession();
         String token = request.getHeader("token");
         String cartKey = token + "_cart";
         List<OrderDetailPO> cart = (List<OrderDetailPO>) session.getAttribute(cartKey);
-        if (ObjectUtils.isEmpty(cart)) {
+        if (cart == null) {
             cart = new ArrayList<>();
             if (num > 0) {
-                detail.setTotal(num);
-                detail.setTotalPrice(num * detail.getDishesPrice());
+                buildOrderDetail(detail, dishes, num);
                 cart.add(detail);
+                session.setAttribute(cartKey, cart);
             }
         } else {
-            AtomicReference<Boolean> flag = new AtomicReference<>(true);
-            cart.forEach(orderDetail -> {
-                if (detail.getDishesId().equals(orderDetail.getDishesId())) {
+            // 购物车是否存在该菜品标志位
+            boolean flag = true;
+            Iterator<OrderDetailPO> iterator = cart.iterator();
+            while (iterator.hasNext()) {
+                OrderDetailPO orderDetail = iterator.next();
+                // 存在该菜品 直接修改total and totalPrice
+                if (dishesId.equals(orderDetail.getDishesId())) {
                     int total = orderDetail.getTotal() + num;
+                    // 若当前total > 0 则进行数据修改 否则对该菜品从购物车进行删除
                     if (total > 0) {
-                        orderDetail.setTotal(total);
-                        orderDetail.setTotalPrice(detail.getDishesPrice() * total);
+                        buildOrderDetail(orderDetail, dishes, total);
                     } else {
-                        delete(request, detail.getDishesId());
+                        iterator.remove();
                     }
-                    flag.set(false);
+                    flag = false;
                 }
-            });
-            if (flag.get()) {
-                detail.setTotal(num);
-                detail.setTotalPrice(num * detail.getDishesPrice());
-                cart.add(detail);
             }
+            if (flag) {
+                if (num > 0) {
+                    buildOrderDetail(detail, dishes, num);
+                    cart.add(detail);
+                    session.setAttribute(cartKey, cart);
+                }
+            }
+
         }
-        session.setAttribute(cartKey, cart);
         return WebResult.ok();
+    }
+
+    /**
+     * 构建购物车商品条目
+     *
+     * @param detail 条目信息
+     * @param dishes 菜品信息
+     * @param total  数量
+     */
+    private void buildOrderDetail(OrderDetailPO detail, DishesPO dishes, Integer total) {
+        detail.setTotal(total);
+        detail.setTotalPrice(dishes.getPrice() * total);
+        detail.setUrl(dishes.getUrl());
+        detail.setDishesPrice(dishes.getPrice());
+        detail.setDishesName(dishes.getName());
+        detail.setDishesId(dishes.getId());
     }
 
     @GetMapping("/list")
@@ -83,7 +119,6 @@ public class ShoppingCartController {
     }
 
     /**
-     *
      * @param request
      * @param dishesId 菜品Id
      * @return
@@ -91,12 +126,10 @@ public class ShoppingCartController {
     @PostMapping("/delete")
     public WebResult delete(HttpServletRequest request, Integer dishesId) {
         String cartKey = request.getHeader("token") + "_cart";
-        List<OrderDetailPO> cart = (List<OrderDetailPO>) request.getSession().getAttribute(cartKey);
+        HttpSession session = request.getSession();
+        List<OrderDetailPO> cart = (List<OrderDetailPO>) session.getAttribute(cartKey);
         if (cart != null) {
-            List<OrderDetailPO> list = cart.stream()
-                    .filter(detail -> !detail.getDishesId().equals(dishesId))
-                    .collect(Collectors.toList());
-            request.getSession().setAttribute(cartKey, list);
+            cart.removeIf(orderDetail -> dishesId.equals(orderDetail.getDishesId()));
         }
         return WebResult.ok();
     }

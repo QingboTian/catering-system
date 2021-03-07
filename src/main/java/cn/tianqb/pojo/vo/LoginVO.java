@@ -6,11 +6,13 @@ import java.util.Date;
 
 /**
  * @author tianqingbo3
- * @date 2021/3/3 0:22  
+ * @date 2021/3/3 0:22
  * @version v1.0
  */
 @Data
 public class LoginVO {
+
+    private Integer id;
 
     /**
      * 用户名
