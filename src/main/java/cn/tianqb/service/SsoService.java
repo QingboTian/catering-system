@@ -1,5 +1,6 @@
 package cn.tianqb.service;
 
+import cn.tianqb.enums.RoleEnum;
 import cn.tianqb.pojo.AccessToken;
 import cn.tianqb.pojo.po.UserInfo;
 import cn.tianqb.pojo.query.UserQuery;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface SsoService {
 
-    AccessToken login(HttpServletRequest request, LoginVO loginVO);
+    AccessToken login(HttpServletRequest request, LoginVO loginVO, RoleEnum roleEnum);
 
     void logout(LoginVO loginVO);
 
