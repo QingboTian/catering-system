@@ -65,14 +65,14 @@ public class SsoServiceImpl implements SsoService {
         /**
          * 登录用户判断
          */
-        if (roleEnum.equals(RoleEnum.ADMINISTRATOR)) {
-            Assert.notTrue(list.get(0).getRoleId().equals(RoleEnum.ADMINISTRATOR.getCode()),
-                    HttpStatus.UNAUTHORIZED.value(), "Access denied");
-        }
-        if (roleEnum.equals(RoleEnum.USER)) {
-            Assert.notTrue(list.get(0).getRoleId().equals(RoleEnum.USER.getCode()),
-                    HttpStatus.UNAUTHORIZED.value(), "Access denied");
-        }
+//        if (roleEnum.equals(RoleEnum.ADMINISTRATOR)) {
+//            Assert.notTrue(list.get(0).getRoleId().equals(RoleEnum.ADMINISTRATOR.getCode()),
+//                    HttpStatus.UNAUTHORIZED.value(), "Access denied");
+//        }
+//        if (roleEnum.equals(RoleEnum.USER)) {
+//            Assert.notTrue(list.get(0).getRoleId().equals(RoleEnum.USER.getCode()),
+//                    HttpStatus.UNAUTHORIZED.value(), "Access denied");
+//        }
 
         Assert.notTrue(StatusEnum.NORMAL.getCode().equals(list.get(0).getStatus()), HttpStatus.UNAUTHORIZED.value(),
                 "It is currently on the blacklist");
