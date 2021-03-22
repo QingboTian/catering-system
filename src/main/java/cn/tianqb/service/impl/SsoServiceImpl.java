@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,15 +50,15 @@ public class SsoServiceImpl implements SsoService {
     @Override
     public AccessToken login(HttpServletRequest request, LoginVO loginVO, RoleEnum roleEnum) {
         PageHelper.startPage(1, 1);
-        Assert.isNull(loginVO, HttpStatus.UNAUTHORIZED.value(), "login object is null");
-        Assert.isNull(loginVO.getUsername(), HttpStatus.UNAUTHORIZED.value(), "username is empty");
-        Assert.isNull(loginVO.getPassword(), HttpStatus.UNAUTHORIZED.value(), "password is empty");
+        Assert.isNull(loginVO, HttpStatus.FORBIDDEN.value(), "login object is null");
+        Assert.isNull(loginVO.getUsername(), HttpStatus.FORBIDDEN.value(), "username is empty");
+        Assert.isNull(loginVO.getPassword(), HttpStatus.FORBIDDEN.value(), "password is empty");
 
         UserInfoExample example = new UserInfoExample();
         example.createCriteria().andUsernameEqualTo(loginVO.getUsername());
         List<UserInfo> list = userInfoMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(list)) {
-            throw new AppException("not registry", HttpStatus.UNAUTHORIZED.value());
+            throw new AppException("not registry", HttpStatus.FORBIDDEN.value());
         }
 
         /**
@@ -74,10 +73,10 @@ public class SsoServiceImpl implements SsoService {
 //                    HttpStatus.UNAUTHORIZED.value(), "Access denied");
 //        }
 
-        Assert.notTrue(StatusEnum.NORMAL.getCode().equals(list.get(0).getStatus()), HttpStatus.UNAUTHORIZED.value(),
+        Assert.notTrue(StatusEnum.NORMAL.getCode().equals(list.get(0).getStatus()), HttpStatus.FORBIDDEN.value(),
                 "It is currently on the blacklist");
         String password = MD5Utils.md5(loginVO.getPassword());
-        Assert.notTrue(password.equals(list.get(0).getPassword()), HttpStatus.UNAUTHORIZED.value(), "Login password error");
+        Assert.notTrue(password.equals(list.get(0).getPassword()), HttpStatus.FORBIDDEN.value(), "Login password error");
 
         AccessToken accessToken = buildToken();
         HttpSession session = request.getSession();
@@ -104,6 +103,7 @@ public class SsoServiceImpl implements SsoService {
 
     @Override
     public PageInfo<UserInfo> list(UserQuery query) {
+        Assert.notTrue(WebHelper.getRoleId().equals(RoleEnum.ADMINISTRATOR.getCode()), "Illegal operation");
         PageHelper.startPage(query.getCurrentPage(), query.getPageSize());
         UserInfoExample example = new UserInfoExample();
         example.setOrderByClause("created desc");
@@ -124,6 +124,8 @@ public class SsoServiceImpl implements SsoService {
     @Override
     public Boolean delete(Integer id) {
         Assert.isNull(id, "id is empty");
+        Assert.isTrue(id.equals(WebHelper.getId()), "This is you account, unable to delete");
+        Assert.notTrue(WebHelper.getRoleId().equals(RoleEnum.ADMINISTRATOR.getCode()), "Illegal operation");
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
         if (!ObjectUtils.isEmpty(userInfo)) {
             userInfo.setModifier(WebHelper.getUsername());

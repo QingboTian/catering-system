@@ -11,4 +11,12 @@ public class WebHelper {
     public static String getUsername() {
         return LoginContext.get().getUsername();
     }
+
+    public static Integer getId() {
+        return LoginContext.get().getId();
+    }
+
+    public static Integer getRoleId() {
+        return LoginContext.get().getRoleId();
+    }
 }

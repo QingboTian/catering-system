@@ -52,7 +52,7 @@ public class SsoController {
                 if (RoleEnum.ADMINISTRATOR.getCode().equals(userInfo.getRoleId())) {
                     return WebResult.ok();
                 } else {
-                    throw new AppException("Access denied", HttpStatus.UNAUTHORIZED.value());
+                    throw new AppException("Access denied", HttpStatus.FORBIDDEN.value());
                 }
             }
         }

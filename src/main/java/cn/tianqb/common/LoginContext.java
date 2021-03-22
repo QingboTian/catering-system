@@ -9,6 +9,8 @@ public class LoginContext {
 
     private static ThreadLocal<LoginContext> threadLocal = new ThreadLocal<>();
 
+    private Integer id;
+
     private String username;
 
     private Integer roleId;
@@ -27,6 +29,14 @@ public class LoginContext {
 
     public static LoginContext get() {
         return threadLocal.get();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -64,7 +74,8 @@ public class LoginContext {
     @Override
     public String toString() {
         return "LoginContext{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", roleId=" + roleId +
                 ", phone='" + phone + '\'' +
                 ", mail='" + mail + '\'' +
