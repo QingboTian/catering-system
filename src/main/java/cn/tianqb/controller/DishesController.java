@@ -43,8 +43,13 @@ public class DishesController {
         return WebResult.ok(dishesService.findList(query));
     }
 
-    @GetMapping("/get")
-    public WebResult<DishesPO> findOne(DishesQuery query) {
-        return WebResult.ok(dishesService.findOne(query));
+    @PostMapping("/online")
+    public WebResult<Boolean> online(Integer id) {
+        return WebResult.ok(dishesService.online(id));
+    }
+
+    @PostMapping("/offline")
+    public WebResult<Boolean> offline(Integer id) {
+        return WebResult.ok(dishesService.offline(id));
     }
 }

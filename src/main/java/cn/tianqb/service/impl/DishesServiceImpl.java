@@ -1,6 +1,7 @@
 package cn.tianqb.service.impl;
 
 import cn.tianqb.common.Assert;
+import cn.tianqb.enums.DishesStatusEnum;
 import cn.tianqb.enums.StatusEnum;
 import cn.tianqb.mapper.CategoryMapper;
 import cn.tianqb.mapper.DishesMapper;
@@ -87,8 +88,9 @@ public class DishesServiceImpl implements DishesService {
         if (!ObjectUtils.isEmpty(query.getCategoryId())) {
             criteria.andCategoryIdEqualTo(query.getCategoryId());
         }
-        // low high price
+        criteria.andStatusNotEqualTo(DishesStatusEnum.DELETED.getCode());
 
+        // low high price
         List<DishesPO> list = dishesMapper.selectByExample(example);
         return new PageInfo<>(list);
     }
@@ -98,5 +100,23 @@ public class DishesServiceImpl implements DishesService {
         Assert.isNull(query, "query is null");
         Assert.isNull(query.getId(), "id is empty");
         return dishesMapper.selectByPrimaryKey(query.getId());
+    }
+
+    @Override
+    public Boolean online(Integer id) {
+        Assert.isNull(id, "id is empty");
+        DishesPO dishes = new DishesPO();
+        dishes.setId(id);
+        dishes.setStatus(DishesStatusEnum.ONLINE.getCode());
+        return dishesMapper.updateByPrimaryKeySelective(dishes) == 1;
+    }
+
+    @Override
+    public Boolean offline(Integer id) {
+        Assert.isNull(id, "id is empty");
+        DishesPO dishes = new DishesPO();
+        dishes.setId(id);
+        dishes.setStatus(DishesStatusEnum.OFFLINE.getCode());
+        return dishesMapper.updateByPrimaryKeySelective(dishes) == 1;
     }
 }

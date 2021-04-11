@@ -27,4 +27,8 @@ public interface OrderService {
     Boolean delete(Integer id);
 
     Map statistical();
+
+    Boolean update(OrderPO orderPO);
+
+    Boolean statusUpdate(String orderId, Integer code);
 }

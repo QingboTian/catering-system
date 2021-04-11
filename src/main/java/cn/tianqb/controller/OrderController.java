@@ -1,6 +1,7 @@
 package cn.tianqb.controller;
 
 import cn.tianqb.common.WebResult;
+import cn.tianqb.enums.OrderStatusEnum;
 import cn.tianqb.pojo.po.OrderPO;
 import cn.tianqb.pojo.query.OrderQuery;
 import cn.tianqb.pojo.vo.CommentVO;
@@ -36,12 +37,12 @@ public class OrderController {
         return WebResult.ok(orderService.findList(query));
     }
 
-    @GetMapping("/pay")
+    @PostMapping("/pay")
     public WebResult<Boolean> pay(String orderId) {
         return WebResult.ok(orderService.pay(orderId));
     }
 
-    @GetMapping("/comment")
+    @PostMapping("/comment")
     public WebResult<Boolean> comment(CommentVO commentVO) {
         return WebResult.ok(orderService.comment(commentVO));
     }
@@ -51,7 +52,7 @@ public class OrderController {
         return WebResult.ok(orderService.findOne(query));
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public WebResult<Boolean> delete(Integer id) {
         return WebResult.ok(orderService.delete(id));
     }
@@ -59,6 +60,11 @@ public class OrderController {
     @GetMapping("/statistical")
     public WebResult<Map> statistical() {
         return WebResult.ok(orderService.statistical());
+    }
+
+    @PostMapping("/done")
+    public WebResult<Boolean> done(String orderId) {
+        return WebResult.ok(orderService.statusUpdate(orderId, OrderStatusEnum.DONE.getCode()));
     }
 
 }

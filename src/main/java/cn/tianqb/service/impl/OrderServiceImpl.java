@@ -56,8 +56,8 @@ public class OrderServiceImpl implements OrderService {
     private void orderCheck(OrderPO order) {
         Assert.isNull(order, "order is null");
         Assert.isTrue(CollectionUtils.isEmpty(order.getOrderDetails()), "orderDetail is empty");
-        Assert.isNull(order.getPhone(), "phone is empty");
-        Assert.isNull(order.getAddress(), "address is empty");
+//        Assert.isNull(order.getPhone(), "phone is empty");
+//        Assert.isNull(order.getAddress(), "address is empty");
     }
 
     private void orderInit(OrderPO order) {
@@ -186,6 +186,26 @@ public class OrderServiceImpl implements OrderService {
 ////            if (order.getCreated().compareTo())
 //        });
         return null;
+    }
+
+    @Override
+    public Boolean update(OrderPO orderPO) {
+        return orderMapper.updateByPrimaryKeySelective(orderPO) == 1;
+    }
+
+    @Override
+    public Boolean statusUpdate(String orderId, Integer code) {
+        PageHelper.startPage(1, 1);
+        OrderExample example = new OrderExample();
+        example.createCriteria().andOrderIdEqualTo(orderId);
+        List<OrderPO> orders = orderMapper.selectByExample(example);
+        if (!ObjectUtils.isEmpty(orders)) {
+            OrderPO order = orders.get(0);
+            order.setStatus(code);
+            orderMapper.updateByPrimaryKey(order);
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 
     /**

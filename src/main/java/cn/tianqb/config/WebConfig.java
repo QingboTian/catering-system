@@ -1,5 +1,6 @@
 package cn.tianqb.config;
 
+import cn.tianqb.interceptor.OptionsRequestInterceptor;
 import cn.tianqb.interceptor.SsoInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private SsoInterceptor ssoInterceptor;
+    @Autowired
+    private OptionsRequestInterceptor optionsRequestInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(ssoInterceptor).addPathPatterns("/api/**");
+        registry.addInterceptor(ssoInterceptor).addPathPatterns("/api/**").excludePathPatterns("/api/upload/**");
+        registry.addInterceptor(optionsRequestInterceptor).addPathPatterns("/**");
     }
 }

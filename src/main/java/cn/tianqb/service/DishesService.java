@@ -20,4 +20,8 @@ public interface DishesService {
     PageInfo<DishesPO> findList(DishesQuery query);
 
     DishesPO findOne(DishesQuery query);
+
+    Boolean online(Integer id);
+
+    Boolean offline(Integer id);
 }
