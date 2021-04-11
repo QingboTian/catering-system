@@ -89,7 +89,9 @@ public class DishesServiceImpl implements DishesService {
             criteria.andCategoryIdEqualTo(query.getCategoryId());
         }
         criteria.andStatusNotEqualTo(DishesStatusEnum.DELETED.getCode());
-
+        if (!ObjectUtils.isEmpty(query.getStatus())) {
+            criteria.andStatusEqualTo(query.getStatus());
+        }
         // low high price
         List<DishesPO> list = dishesMapper.selectByExample(example);
         return new PageInfo<>(list);

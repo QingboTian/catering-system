@@ -19,5 +19,4 @@ public class DishesQuery extends BaseQuery {
     private BigDecimal highPrice;
 
     private Integer categoryId;
-
 }

@@ -20,4 +20,6 @@ public class BaseQuery implements Serializable {
     private Integer id;
 
     private String name;
+
+    private Integer status;
 }
