@@ -3,6 +3,7 @@ package cn.tianqb.service.impl;
 import cn.tianqb.common.Assert;
 import cn.tianqb.enums.OrderEvent;
 import cn.tianqb.enums.OrderStatusEnum;
+import cn.tianqb.enums.RoleEnum;
 import cn.tianqb.enums.StatusEnum;
 import cn.tianqb.exception.AppException;
 import cn.tianqb.mapper.DishesMapper;
@@ -27,8 +28,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author tianqingbo3
@@ -114,6 +123,9 @@ public class OrderServiceImpl implements OrderService {
         if (!ObjectUtils.isEmpty(query.getStatus())) {
             criteria.andStatusEqualTo(query.getStatus());
         }
+        if (!RoleEnum.ADMINISTRATOR.getCode().equals(WebHelper.getRoleId())) {
+            criteria.andCreatorEqualTo(WebHelper.getUsername());
+        }
         List<OrderPO> list = orderMapper.selectByExample(example);
         list.forEach(order -> {
             OrderDetailExample orderDetailExample = new OrderDetailExample();
@@ -174,18 +186,48 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Map statistical() {
-//        LocalDate localDate = LocalDate.now().plusDays(-1);
-//        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
-//        Date yesterday = Date.from(zonedDateTime.toInstant());
-//        List<OrderPO> orders = orderMapper.selectByExample(new OrderExample());
-//        AtomicReference<Double> totalPrice = new AtomicReference<>(0d);
-//        AtomicReference<Double> yesterdayPrice = new AtomicReference<>(0d);
-//        Map<String, Object> res = new HashMap<>(8);
-//        orders.forEach(order -> {
-//            totalPrice.updateAndGet(v -> v + order.getTotalPrice().doubleValue());
-////            if (order.getCreated().compareTo())
-//        });
-        return null;
+        Map<String, Object> result = new HashMap<>(8);
+        LocalDate localDate = LocalDate.now();
+        OrderExample orderExample = new OrderExample();
+        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+        Date today = Date.from(zonedDateTime.toInstant());
+        orderExample.createCriteria().andCreatedGreaterThan(today);
+        Map todayMap = statisticalHelper(orderExample);
+        // 当日营收
+        result.put("todayRevenue", todayMap.get("revenue"));
+        // 当日成本
+        result.put("todayCost", todayMap.get("cost"));
+        Map TotalMap = statisticalHelper(new OrderExample());
+        // 总营收
+        result.put("totalRevenue", TotalMap.get("revenue"));
+        // 总成本
+        result.put("totalCost", TotalMap.get("cost"));
+        return result;
+    }
+
+    private Map statisticalHelper(OrderExample example) {
+        Map<String, Object> result = new HashMap<>(8);
+        List<OrderPO> orders = orderMapper.selectByExample(example);
+        double revenue = orders.stream().mapToDouble(OrderPO::getTotalPrice).sum();
+        AtomicReference<Double> cost = new AtomicReference<>(0.0);
+        orders.forEach(order -> {
+            OrderDetailExample orderDetailExample = new OrderDetailExample();
+            orderDetailExample.createCriteria().andOrderIdEqualTo(order.getOrderId());
+            List<OrderDetailPO> orderDetails = orderDetailMapper.selectByExample(orderDetailExample);
+            double detailPrice = orderDetails.stream().mapToDouble(detail -> {
+                Integer dishesId = detail.getDishesId();
+                DishesPO dishesPO = dishesMapper.selectByPrimaryKey(dishesId);
+                return dishesPO.getCostPrice() * detail.getTotal();
+            }).sum();
+            cost.updateAndGet(v -> v + detailPrice);
+        });
+        BigDecimal bigDecimalRevenue = new BigDecimal(revenue);
+        BigDecimal bigDecimalCost = new BigDecimal(cost.get());
+        // 营收
+        result.put("revenue", bigDecimalRevenue.setScale(2, RoundingMode.HALF_UP).doubleValue());
+        // 成本
+        result.put("cost", bigDecimalCost.setScale(2, RoundingMode.HALF_UP).doubleValue());
+        return result;
     }
 
     @Override

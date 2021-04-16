@@ -34,11 +34,13 @@ class User implements Serializable {
     private String username;
     private String phone;
     private String mail;
+    private Integer roleId;
 
     User() {
         LoginContext loginContext = LoginContext.get();
         this.username = loginContext.getUsername();
         this.phone = loginContext.getPhone();
         this.mail = loginContext.getMail();
+        this.roleId = loginContext.getRoleId();
     }
 }
