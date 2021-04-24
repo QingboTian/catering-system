@@ -16,6 +16,27 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`catering` /*!40100 DEFAULT CHARACTER SE
 
 USE `catering`;
 
+/*Table structure for table `appointment` */
+
+DROP TABLE IF EXISTS `appointment`;
+
+CREATE TABLE `appointment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` int(11) NOT NULL DEFAULT '1',
+  `room_id` int(11) NOT NULL,
+  `room_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `room_type` int(11) DEFAULT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `creator` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `modifier` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `appointment` */
+
 /*Table structure for table `category` */
 
 DROP TABLE IF EXISTS `category`;
@@ -36,7 +57,7 @@ CREATE TABLE `category` (
 
 /*Data for the table `category` */
 
-insert  into `category`(`id`,`name`,`parent_id`,`remark`,`level`,`status`,`created`,`modified`,`creator`,`modifier`) values 
+insert  into `category`(`id`,`name`,`parent_id`,`remark`,`level`,`status`,`created`,`modified`,`creator`,`modifier`) values
 (2,'一级分类',0,NULL,1,-1,'2021-03-06 21:10:46','2021-03-06 21:10:46','admin','admin'),
 (3,'二级分类',2,NULL,2,-1,'2021-03-06 21:11:12','2021-03-06 21:11:12','admin','admin'),
 (4,'二级分类2',2,NULL,2,-1,'2021-03-06 21:12:28','2021-03-06 21:12:28','admin','admin'),
@@ -75,22 +96,23 @@ CREATE TABLE `dishes` (
   `cost_price` double(10,3) NOT NULL COMMENT '成本价',
   `unit` varchar(256) COLLATE utf8_unicode_ci NOT NULL COMMENT '单位',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `dishes` */
 
-insert  into `dishes`(`id`,`name`,`description`,`price`,`taste`,`url`,`status`,`created`,`modified`,`creator`,`modifier`,`category_id`,`category`,`cost_price`,`unit`) values 
+insert  into `dishes`(`id`,`name`,`description`,`price`,`taste`,`url`,`status`,`created`,`modified`,`creator`,`modifier`,`category_id`,`category`,`cost_price`,`unit`) values
 (1,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',-1,'2021-03-06 23:34:28','2021-03-06 23:34:28','admin','admin',3,'二级分类',100.100,''),
-(2,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',3,'2021-04-11 16:06:00','2021-04-11 16:06:00','admin','admin',3,'二级分类',100.100,''),
+(2,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',2,'2021-04-11 19:26:11','2021-04-11 19:26:11','admin','admin',3,'二级分类',100.100,''),
 (3,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',1,'2021-03-06 23:36:45','2021-03-06 23:36:45','admin','admin',3,'二级分类',100.100,''),
 (4,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',1,'2021-03-06 23:36:46','2021-03-06 23:36:46','admin','admin',3,'二级分类',100.100,''),
 (5,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',1,'2021-03-06 23:36:46','2021-03-06 23:36:46','admin','admin',3,'二级分类',100.100,''),
 (6,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',1,'2021-03-06 23:36:47','2021-03-06 23:36:47','admin','admin',3,'二级分类',100.100,''),
-(7,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',3,'2021-04-11 16:05:59','2021-04-11 16:05:59','admin','admin',3,'二级分类',100.100,''),
+(7,'烤羊腿','暂无描述',200.000,'暂无描述','/static/929aecb2f77f481288a034fd1b856dc1.jpg',2,'2021-04-11 19:26:13','2021-04-11 19:26:13','admin','admin',3,'二级分类',100.100,''),
 (8,'烧羊蹄','暂无描述',10.000,'暂无描述','/static/116b5457799141ed8965f9b96b4370d2.jpg',3,'2021-04-11 16:03:06','2021-04-11 16:03:06','admin','admin',3,'二级分类',5.000,''),
 (9,'烧羊蹄','暂无描述',10.000,'暂无描述','/static/116b5457799141ed8965f9b96b4370d2.jpg',3,'2021-04-11 16:02:56','2021-04-11 16:02:56','admin','admin',3,'二级分类',5.000,''),
-(10,'烧羊蹄','暂无描述',10.000,'暂无描述','/static/116b5457799141ed8965f9b96b4370d2.jpg',3,'2021-04-11 16:03:09','2021-04-11 16:03:09','admin','admin',3,'二级分类',5.000,''),
-(11,'啊实打实的a\'s','暂无描述',2.200,'暂无描述','/static/e51ec4a5d39e4306a3390863a994c070.png',1,'2021-04-11 19:18:59','2021-04-11 19:18:59','admin','admin',16,'小吃',1.100,'一份');
+(10,'烧羊蹄','暂无描述',10.000,'暂无描述','/static/116b5457799141ed8965f9b96b4370d2.jpg',2,'2021-04-11 19:26:14','2021-04-11 19:26:14','admin','admin',3,'二级分类',5.000,''),
+(11,'啊实打实的a\'s','暂无描述',2.200,'暂无描述','/static/e51ec4a5d39e4306a3390863a994c070.png',-1,'2021-04-11 19:18:59','2021-04-11 19:18:59','admin','admin',16,'小吃',1.100,'一份'),
+(12,'测试商品','暂无描述',3.200,'暂无描述','/static/a211a841dbf04a4b8c672f30e323b8c4.jpg',2,'2021-04-11 19:36:56','2021-04-11 19:36:56','admin','admin',16,'小吃',1.100,'一杯');
 
 /*Table structure for table `operate_log` */
 
@@ -134,17 +156,19 @@ CREATE TABLE `order_detail` (
   `modifier` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `order_detail` */
 
-insert  into `order_detail`(`id`,`dishes_id`,`total`,`total_price`,`dishes_price`,`order_id`,`dishes_name`,`url`,`created`,`modified`,`creator`,`modifier`,`status`) values 
+insert  into `order_detail`(`id`,`dishes_id`,`total`,`total_price`,`dishes_price`,`order_id`,`dishes_name`,`url`,`created`,`modified`,`creator`,`modifier`,`status`) values
 (3,1,2,400.000,200.000,'bea4bf2ad1c440e28b7c625c52627a49','烤羊腿','/static/929aecb2f77f481288a034fd1b856dc1.jpg','2021-03-07 00:28:50','2021-03-07 00:28:50','admin','admin',1),
 (4,10,1,10.000,10.000,'bea4bf2ad1c440e28b7c625c52627a49','烧羊蹄','/static/116b5457799141ed8965f9b96b4370d2.jpg','2021-03-07 00:28:50','2021-03-07 00:28:50','admin','admin',1),
 (5,3,1,200.000,200.000,'00551c08195a46cca49346b58a47f2be','烤羊腿','/static/929aecb2f77f481288a034fd1b856dc1.jpg','2021-04-11 18:40:16','2021-04-11 18:40:16','admin','admin',1),
 (6,8,1,10.000,10.000,'00551c08195a46cca49346b58a47f2be','烧羊蹄','/static/116b5457799141ed8965f9b96b4370d2.jpg','2021-04-11 18:40:16','2021-04-11 18:40:16','admin','admin',1),
 (7,5,2,400.000,200.000,'00551c08195a46cca49346b58a47f2be','烤羊腿','/static/929aecb2f77f481288a034fd1b856dc1.jpg','2021-04-11 18:40:16','2021-04-11 18:40:16','admin','admin',1),
-(8,3,1,200.000,200.000,'6774ef4f5a7f4a5fbb1d1a0ad40ac0b1','烤羊腿','/static/929aecb2f77f481288a034fd1b856dc1.jpg','2021-04-11 18:51:15','2021-04-11 18:51:15','admin','admin',1);
+(8,3,1,200.000,200.000,'6774ef4f5a7f4a5fbb1d1a0ad40ac0b1','烤羊腿','/static/929aecb2f77f481288a034fd1b856dc1.jpg','2021-04-11 18:51:15','2021-04-11 18:51:15','admin','admin',1),
+(9,12,4,12.800,3.200,'676d164d34114109b6278e2c6fb73f66','测试商品','/static/a211a841dbf04a4b8c672f30e323b8c4.jpg','2021-04-11 19:27:57','2021-04-11 19:27:57','admin','admin',1),
+(10,10,1,10.000,10.000,'676d164d34114109b6278e2c6fb73f66','烧羊蹄','/static/116b5457799141ed8965f9b96b4370d2.jpg','2021-04-11 19:27:57','2021-04-11 19:27:57','admin','admin',1);
 
 /*Table structure for table `order_table` */
 
@@ -163,14 +187,35 @@ CREATE TABLE `order_table` (
   `modifier` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `order_table` */
 
-insert  into `order_table`(`id`,`order_id`,`total_price`,`phone`,`address`,`remark`,`created`,`modified`,`creator`,`modifier`,`status`) values 
+insert  into `order_table`(`id`,`order_id`,`total_price`,`phone`,`address`,`remark`,`created`,`modified`,`creator`,`modifier`,`status`) values
 (1,'bea4bf2ad1c440e28b7c625c52627a49',410.000,'18220573635','北京','无','2021-03-07 00:32:34','2021-03-07 00:32:34','admin','admin',1),
-(2,'00551c08195a46cca49346b58a47f2be',610.000,'','','无','2021-04-11 18:40:16','2021-04-11 18:40:16','admin','admin',2),
-(3,'6774ef4f5a7f4a5fbb1d1a0ad40ac0b1',200.000,'','','无','2021-04-11 18:51:15','2021-04-11 18:51:15','admin','admin',1);
+(2,'00551c08195a46cca49346b58a47f2be',610.000,'','','无','2021-04-11 18:40:16','2021-04-11 18:40:16','admin','admin',5),
+(3,'6774ef4f5a7f4a5fbb1d1a0ad40ac0b1',200.000,'','','无','2021-04-11 18:51:15','2021-04-11 18:51:15','admin','admin',2),
+(4,'676d164d34114109b6278e2c6fb73f66',22.800,'','','无','2021-04-11 19:27:57','2021-04-11 19:27:57','admin','admin',5);
+
+/*Table structure for table `room` */
+
+DROP TABLE IF EXISTS `room`;
+
+CREATE TABLE `room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` int(11) NOT NULL,
+  `no` int(11) DEFAULT NULL,
+  `human_num` int(11) NOT NULL,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `modifier` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `room` */
 
 /*Table structure for table `test_table` */
 
@@ -206,8 +251,8 @@ CREATE TABLE `user_info` (
 
 /*Data for the table `user_info` */
 
-insert  into `user_info`(`id`,`username`,`password`,`birthday`,`status`,`created`,`modified`,`creator`,`modifier`,`role_id`,`phone`,`mail`) values 
-(3,'admin','21232f297a57a5a743894a0e4a801fc3',NULL,1,'2021-03-08 10:16:27','2021-03-08 10:16:27',NULL,NULL,1,'18220573635',NULL);
+insert  into `user_info`(`id`,`username`,`password`,`birthday`,`status`,`created`,`modified`,`creator`,`modifier`,`role_id`,`phone`,`mail`) values
+(3,'admin','21232f297a57a5a743894a0e4a801fc3',NULL,1,'2021-04-18 19:23:27','2021-04-18 19:23:27',NULL,NULL,1,'18220573635',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
