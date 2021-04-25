@@ -3,6 +3,9 @@ package cn.tianqb.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author tianqingbo3
  * @version 1.0
@@ -21,4 +24,10 @@ public enum AppointmentDayEnum {
     private Integer code;
     private String desc;
 
+    public static boolean contains(Integer code) {
+        return Arrays.stream(AppointmentDayEnum.values())
+                .map(AppointmentDayEnum::getCode)
+                .collect(Collectors.toList())
+                .contains(code);
+    }
 }

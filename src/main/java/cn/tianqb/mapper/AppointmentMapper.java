@@ -16,13 +16,13 @@ public interface AppointmentMapper {
     int deleteByExample(AppointmentExample example);
 
     @Delete({
-        "delete from AppointmentPO",
+        "delete from appointment",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into AppointmentPO (id, status, ",
+        "insert into appointment (id, status, ",
         "room_id, room_name, ",
         "room_type, created, ",
         "modified, creator, ",
@@ -60,7 +60,7 @@ public interface AppointmentMapper {
         "select",
         "id, status, room_id, room_name, room_type, created, modified, creator, modifier, ",
         "start_time, end_time",
-        "from AppointmentPO",
+        "from appointment",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
@@ -88,7 +88,7 @@ public interface AppointmentMapper {
     int updateByPrimaryKeySelective(AppointmentPO record);
 
     @Update({
-        "update AppointmentPO",
+        "update appointment",
         "set status = #{status,jdbcType=INTEGER},",
           "room_id = #{roomId,jdbcType=INTEGER},",
           "room_name = #{roomName,jdbcType=VARCHAR},",

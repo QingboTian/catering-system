@@ -6,10 +6,7 @@ import cn.tianqb.pojo.vo.AppointmentVO;
 import cn.tianqb.service.AppointmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping
-    public WebResult<Boolean> appointment(AppointmentVO vo) {
+    public WebResult<Boolean> appointment(@RequestBody AppointmentVO vo) {
         return WebResult.ok(appointmentService.appointment(vo));
     }
 

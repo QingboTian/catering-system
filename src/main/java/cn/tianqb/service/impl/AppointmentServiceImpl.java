@@ -155,5 +155,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         Assert.isNull(vo.getAreaCode(), "time area code is null");
         Assert.isNull(vo.getRoomId(), "room id is null");
         Assert.isNull(vo.getDay(), "day is null");
+        Assert.notTrue(AppointmentDayEnum.contains(vo.getDay()), "error day data");
     }
 }

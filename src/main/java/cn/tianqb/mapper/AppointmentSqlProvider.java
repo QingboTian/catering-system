@@ -15,21 +15,21 @@ public class AppointmentSqlProvider {
     public String countByExample(AppointmentExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("AppointmentPO");
+        FROM("appointment");
         applyWhere(example, false);
         return SQL();
     }
 
     public String deleteByExample(AppointmentExample example) {
         BEGIN();
-        DELETE_FROM("AppointmentPO");
+        DELETE_FROM("appointment");
         applyWhere(example, false);
         return SQL();
     }
 
     public String insertSelective(AppointmentPO record) {
         BEGIN();
-        INSERT_INTO("AppointmentPO");
+        INSERT_INTO("appointment");
 
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
@@ -95,7 +95,7 @@ public class AppointmentSqlProvider {
         SELECT("modifier");
         SELECT("start_time");
         SELECT("end_time");
-        FROM("AppointmentPO");
+        FROM("appointment");
         applyWhere(example, false);
 
         if (example != null && example.getOrderByClause() != null) {
@@ -110,7 +110,7 @@ public class AppointmentSqlProvider {
         AppointmentExample example = (AppointmentExample) parameter.get("example");
 
         BEGIN();
-        UPDATE("AppointmentPO");
+        UPDATE("appointment");
 
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
@@ -162,7 +162,7 @@ public class AppointmentSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("AppointmentPO");
+        UPDATE("appointment");
 
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("status = #{record.status,jdbcType=INTEGER}");
@@ -183,7 +183,7 @@ public class AppointmentSqlProvider {
 
     public String updateByPrimaryKeySelective(AppointmentPO record) {
         BEGIN();
-        UPDATE("AppointmentPO");
+        UPDATE("appointment");
 
         if (record.getStatus() != null) {
             SET("status = #{status,jdbcType=INTEGER}");
