@@ -33,9 +33,13 @@ CREATE TABLE `appointment` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `appointment` */
+
+insert  into `appointment`(`id`,`status`,`room_id`,`room_name`,`room_type`,`created`,`modified`,`creator`,`modifier`,`start_time`,`end_time`) values
+(1,-1,1,'大厅1号桌',1,'2021-04-25 20:31:52','2021-04-25 20:35:01','admin','admin','2021-04-25 08:00:00','2021-04-25 10:00:00'),
+(2,1,1,'大厅1号桌',1,'2021-04-25 20:32:44','2021-04-25 20:32:44','admin','admin','2021-04-25 10:00:00','2021-04-25 12:00:00');
 
 /*Table structure for table `category` */
 
@@ -213,9 +217,18 @@ CREATE TABLE `room` (
   `modifier` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `room` */
+
+insert  into `room`(`id`,`name`,`type`,`no`,`human_num`,`created`,`modified`,`creator`,`modifier`,`status`) values
+(1,'大厅1号桌',1,1,4,'2021-04-25 17:33:53','2021-04-25 17:33:53',NULL,NULL,1),
+(2,'大厅2号桌',1,2,4,'2021-04-25 17:34:06','2021-04-25 17:34:06',NULL,NULL,1),
+(3,'大厅3号桌',1,3,4,'2021-04-25 17:34:20','2021-04-25 17:34:20',NULL,NULL,1),
+(4,'大厅4号桌',1,4,4,'2021-04-25 17:34:38','2021-04-25 17:34:38',NULL,NULL,1),
+(5,'扬子江',2,NULL,8,'2021-04-25 17:35:26','2021-04-25 17:35:26',NULL,NULL,1),
+(6,'钓鱼台',2,NULL,16,'2021-04-25 17:35:48','2021-04-25 17:35:48',NULL,NULL,1),
+(7,'测试',1,1,5,'2021-04-25 17:40:19','2021-04-25 17:42:51',NULL,NULL,-1);
 
 /*Table structure for table `test_table` */
 
