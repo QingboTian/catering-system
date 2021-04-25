@@ -147,7 +147,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     private String getTime(Integer code) {
-        return AppointmentTimeAreaEnum.findByCcde(code).getStartTime();
+        return AppointmentTimeAreaEnum.findByCode(code).getStartTime();
     }
 
     private void paramsCheck(AppointmentVO vo) {

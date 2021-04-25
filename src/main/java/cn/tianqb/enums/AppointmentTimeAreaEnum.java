@@ -39,7 +39,7 @@ public enum AppointmentTimeAreaEnum {
         Arrays.stream(AppointmentTimeAreaEnum.values()).forEach(e -> MAP.put(e.getCode(), e));
     }
 
-    public static AppointmentTimeAreaEnum findByCcde(Integer code) {
+    public static AppointmentTimeAreaEnum findByCode(Integer code) {
         return MAP.get(code);
     }
 }
